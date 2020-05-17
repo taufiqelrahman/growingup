@@ -27,9 +27,8 @@ export const decryptTokenClient = (cryptedToken) => {
       options,
     );
     result = json.toString(CryptoJS.enc.Utf8);
-  } catch (error) {
-    console.log(error);
-  }
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
   return result;
 };
 
@@ -39,9 +38,8 @@ export const decryptTokenServer = (cryptedToken) => {
   const dec = decipher.update(cryptedToken, 'hex', 'utf8');
   try {
     result = dec + decipher.final('utf8');
-  } catch (error) {
-    console.log(error);
-  }
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
   return result;
 };
 
