@@ -1,15 +1,15 @@
-import React from "react";
-import { Nav } from "shards-react";
+import React from 'react';
+import { Nav } from 'shards-react';
 
-import SidebarNavItem from "./SidebarNavItem";
-import { Store } from "../../../flux";
+import SidebarNavItem from './SidebarNavItem';
+import { Store } from '../../../flux';
 
 class SidebarNavItems extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      navItems: Store.getSidebarItems()
+      navItems: Store.getSidebarItems(),
     };
 
     this.onChange = this.onChange.bind(this);
@@ -26,7 +26,7 @@ class SidebarNavItems extends React.Component {
   onChange() {
     this.setState({
       ...this.state,
-      navItems: Store.getSidebarItems()
+      navItems: Store.getSidebarItems(),
     });
   }
 
@@ -40,7 +40,7 @@ class SidebarNavItems extends React.Component {
           ))}
         </Nav>
       </div>
-    )
+    );
   }
 }
 

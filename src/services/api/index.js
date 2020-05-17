@@ -9,32 +9,32 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
   },
-}
+};
 const createAdapter = () => {
   return axios.create(options);
-}
+};
 
 const createSecureAdapter = (req) => {
   let token;
   if (req) {
     // if server-side
-    const userCookie = req.headers.cookie.split(';').filter(cookie => cookie.includes('user='));
+    const userCookie = req.headers.cookie.split(';').filter((cookie) => cookie.includes('user='));
     const cryptedToken = userCookie[0].split('=')[1];
-    token = !!cryptedToken ? decryptTokenServer(cryptedToken) : '';
+    token = cryptedToken ? decryptTokenServer(cryptedToken) : '';
   } else {
     // if client-side
     const cryptedToken = Cookies.get('user');
-    token = !!cryptedToken ? decryptTokenClient(cryptedToken) : '';
+    token = cryptedToken ? decryptTokenClient(cryptedToken) : '';
   }
   const secureOptions = {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    }
-  }
+    },
+  };
   return axios.create(secureOptions);
-}
+};
 
 export default (req) => {
   const instance = createAdapter();
@@ -42,8 +42,8 @@ export default (req) => {
   const adapter = {
     default: instance,
     secure: secure,
-  }
+  };
   return {
     users: new Users(adapter),
-  }
+  };
 };

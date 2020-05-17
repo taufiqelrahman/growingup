@@ -3,7 +3,7 @@ export default class Products {
     this.adapter = adapter;
   }
 
-  isAdmin(data) {
+  isAdmin() {
     return this.adapter.secure.get('/is-admin');
   }
 }

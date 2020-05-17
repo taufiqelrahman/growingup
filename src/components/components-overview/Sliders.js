@@ -1,5 +1,5 @@
-import React from "react";
-import { ListGroupItem, Slider } from "shards-react";
+import React from 'react';
+import { ListGroupItem, Slider } from 'shards-react';
 
 const Sliders = () => (
   <ListGroupItem className="px-3">
@@ -13,21 +13,15 @@ const Sliders = () => (
         range={{ min: 0, max: 100 }}
         tooltips
       />
-      <Slider
-        theme="info"
-        className="my-4"
-        connect={[false, true]}
-        start={[15]}
-        range={{ min: 0, max: 100 }}
-      />
+      <Slider theme="info" className="my-4" connect={[false, true]} start={[15]} range={{ min: 0, max: 100 }} />
       <Slider
         connect
         start={[35, 65]}
         pips={{
-          mode: "positions",
+          mode: 'positions',
           values: [0, 25, 50, 75, 100],
           stepped: true,
-          density: 5
+          density: 5,
         }}
         range={{ min: 0, max: 100 }}
       />

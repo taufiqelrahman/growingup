@@ -15,7 +15,7 @@ export function encryptTokenClient(token) {
   return json.ciphertext.toString(CryptoJS.enc.Hex);
 }
 
-export const decryptTokenClient = cryptedToken => {
+export const decryptTokenClient = (cryptedToken) => {
   let result = '';
   const options = { mode: CryptoJS.mode.CBC, iv: parsedIv };
   try {
@@ -27,17 +27,21 @@ export const decryptTokenClient = cryptedToken => {
       options,
     );
     result = json.toString(CryptoJS.enc.Utf8);
-  } catch {}
+  } catch (error) {
+    console.log(error);
+  }
   return result;
 };
 
-export const decryptTokenServer = cryptedToken => {
+export const decryptTokenServer = (cryptedToken) => {
   let result = '';
   const decipher = Crypto.createDecipheriv('aes-256-cbc', secretKey, secretIv);
   const dec = decipher.update(cryptedToken, 'hex', 'utf8');
   try {
     result = dec + decipher.final('utf8');
-  } catch {}
+  } catch (error) {
+    console.log(error);
+  }
   return result;
 };
 
