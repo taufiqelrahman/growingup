@@ -3,8 +3,8 @@ import Crypto from 'crypto';
 require('dotenv').config();
 
 // for server
-const secretKey = process.env.SECRET_KEY || '';
-const secretIv = process.env.SECRET_IV || '';
+const secretKey = process.env.REACT_APP_SECRET_KEY || '';
+const secretIv = process.env.REACT_APP_SECRET_IV || '';
 // for client
 const parsedKey = CryptoJS.enc.Utf8.parse(secretKey);
 const parsedIv = CryptoJS.enc.Utf8.parse(secretIv);

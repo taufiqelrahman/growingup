@@ -5,7 +5,7 @@ import { decryptTokenClient, decryptTokenServer } from '../../lib/crypto';
 require('dotenv').config();
 
 const options = {
-  baseURL: `${process.env.API_URL}/api`,
+  baseURL: `${process.env.REACT_APP_API_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,14 +16,15 @@ const createAdapter = () => {
 
 const createSecureAdapter = (req) => {
   let token;
+  let cryptedToken;
   if (req) {
     // if server-side
     const userCookie = req.headers.cookie.split(';').filter((cookie) => cookie.includes('user='));
-    const cryptedToken = userCookie[0].split('=')[1];
+    cryptedToken = userCookie[0].split('=')[1];
     token = cryptedToken ? decryptTokenServer(cryptedToken) : '';
   } else {
     // if client-side
-    const cryptedToken = Cookies.get('user');
+    cryptedToken = Cookies.get('user');
     token = cryptedToken ? decryptTokenClient(cryptedToken) : '';
   }
   const secureOptions = {
