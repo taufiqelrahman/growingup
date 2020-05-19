@@ -6,4 +6,8 @@ export default class Products {
   isAdmin() {
     return this.adapter.secure.get('/is-admin');
   }
+
+  get() {
+    return this.adapter.secure.get('/users');
+  }
 }

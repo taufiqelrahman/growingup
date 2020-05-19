@@ -1,53 +1,56 @@
-// import { EventEmitter } from 'events';
+import { EventEmitter } from 'events';
 
-// import Dispatcher from './dispatcher';
-// import Constants from './constants';
-// import getSidebarNavItems from '../data/sidebar-nav-items';
+import dispatcher from './dispatcher';
+import CONSTANTS from './constants';
+import getSidebarNavItems from '../config/sidebar-nav-items';
 
-// let _store = {
-//   menuVisible: false,
-//   navItems: getSidebarNavItems(),
-// };
+const CHANGE_EVENT = 'change';
 
-// class Store extends EventEmitter {
-//   constructor() {
-//     super();
+let _store = {
+  menuVisible: false,
+  navItems: getSidebarNavItems(),
+  users: [],
+};
 
-//     this.registerToActions = this.registerToActions.bind(this);
-//     this.toggleSidebar = this.toggleSidebar.bind(this);
+class Store extends EventEmitter {
+  // retrieve data
+  getMenuState() {
+    return _store.menuVisible;
+  }
 
-//     Dispatcher.register(this.registerToActions.bind(this));
-//   }
+  getSidebarItems() {
+    return _store.navItems;
+  }
 
-//   registerToActions({ actionType, payload }) {
-//     switch (actionType) {
-//       case Constants.TOGGLE_SIDEBAR:
-//         this.toggleSidebar();
-//         break;
-//       default:
-//     }
-//   }
+  getUsers() {
+    return _store.users;
+  }
 
-//   toggleSidebar() {
-//     _store.menuVisible = !_store.menuVisible;
-//     this.emit(Constants.CHANGE);
-//   }
+  // base
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+  emitChange() {
+    this.emit(CHANGE_EVENT);
+  }
+}
 
-//   getMenuState() {
-//     return _store.menuVisible;
-//   }
+const store = new Store();
 
-//   getSidebarItems() {
-//     return _store.navItems;
-//   }
+dispatcher.register((action) => {
+  switch (action.actionType) {
+    case CONSTANTS.TOGGLE_SIDEBAR:
+      _store.menuVisible = !_store.menuVisible;
+      break;
+    case CONSTANTS.GET_USERS:
+      _store.users = action.data;
+      break;
+    default:
+  }
+  store.emitChange();
+});
 
-//   addChangeListener(callback) {
-//     this.on(Constants.CHANGE, callback);
-//   }
-
-//   removeChangeListener(callback) {
-//     this.removeListener(Constants.CHANGE, callback);
-//   }
-// }
-
-// export default new Store();
+export default store;

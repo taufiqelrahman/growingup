@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GoogleAnalytics from 'react-ga';
+import PropTypes from 'prop-types';
 
 GoogleAnalytics.initialize(process.env.REACT_APP_GAID || 'UA-115105611-2');
 
@@ -40,11 +41,11 @@ const withTracker = (WrappedComponent, options = {}) => {
     }
   };
 
-  return HOC;
-};
+  HOC.propTypes = {
+    location: PropTypes.any,
+  };
 
-HOC.propTypes = {
-  location: PropTypes.node,
+  return HOC;
 };
 
 export default withTracker;

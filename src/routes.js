@@ -36,7 +36,7 @@ export default [
   //   component: AddNewPost
   // },
   {
-    path: '*',
+    path: '/error',
     layout: DefaultLayout,
     component: Errors,
   },
