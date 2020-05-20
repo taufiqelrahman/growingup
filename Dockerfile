@@ -10,7 +10,13 @@ COPY package*.json *yarn* ./
 
 # Install yarn from the local .tgz
 # RUN npm install
-RUN yarn
+# RUN yarn
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && yarn \
+    && apk del build-dependencies
 
 # Bundle app source
 COPY . ./
