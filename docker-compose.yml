@@ -1,0 +1,27 @@
+version: "3"
+services:
+  web:
+    container_name: growingup
+    build: .
+    working_dir: "/usr/src/gu" # Where to container will assume it should run commands and where you will start out if you go inside the container
+    # ports:
+    #   - "3000:80" # <host-port>:<container-port> to listen to, so anything running on port 3000 of the container will map to port 3000 on our localhost
+      # - "3000:3000" # <host-port>:<container-port> to listen to, so anything running on port 3000 of the container will map to port 3000 on our localhost
+    expose: # production
+      - 80
+      - 443
+    networks:
+      - default
+    environment: # Pass environment variables to the service
+      # VIRTUAL_HOST: wigu.taufiqelrahman.com # staging
+      # LETSENCRYPT_HOST: wigu.taufiqelrahman.com # staging
+      VIRTUAL_HOST: admin.whenigrowup.co.id # production
+      LETSENCRYPT_HOST: admin.whenigrowup.co.id # production
+      # INTERNAL_URL: http://localhost:5120 # same as api port
+    # volumes:
+    #   - /var/lib/wigu
+    
+networks:
+  default:
+    external:
+      name: nginx-proxy

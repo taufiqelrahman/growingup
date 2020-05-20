@@ -37,7 +37,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "express": "nodemon -r esm --inspect server.js",
-    "lint": "eslint --ext js,jsx --fix --ignore-path .eslintignore ."
+    "lint": "eslint --ext js,jsx --fix --ignore-path .eslintignore .",
+    "deploy": "yarn build && yarn express"
   },
   "eslintConfig": {
     "extends": "react-app"
