@@ -15,3 +15,14 @@ export function getUsers() {
       console.log(err);
     });
 }
+
+export function updateUser(id, data) {
+  api()
+    .users.update(id, data)
+    .then(() => {
+      getUsers();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}

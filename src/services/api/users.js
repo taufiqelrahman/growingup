@@ -10,4 +10,8 @@ export default class Products {
   get() {
     return this.adapter.secure.get('/users');
   }
+
+  update(id, data) {
+    return this.adapter.secure.patch(`/users/${id}`, data);
+  }
 }

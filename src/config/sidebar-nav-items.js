@@ -11,10 +11,10 @@ export default function () {
       htmlBefore: '<i class="material-icons">people</i>',
       to: '/users',
     },
-    {
-      title: 'Book Contents',
-      htmlBefore: '<i class="material-icons">library_books</i>',
-      to: '/book-contents',
-    },
+    // {
+    //   title: 'Book Contents',
+    //   htmlBefore: '<i class="material-icons">library_books</i>',
+    //   to: '/book-contents',
+    // },
   ];
 }
