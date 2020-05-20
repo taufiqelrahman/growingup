@@ -6,7 +6,7 @@ WORKDIR /usr/src/gu
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
-COPY package*.json *yarn* ./
+COPY package*.json ./
 
 # Install yarn from the local .tgz
 # RUN npm install
@@ -15,7 +15,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
     g++ \
-    && yarn \
+    && npm install \
     && apk del build-dependencies
 
 # Bundle app source
@@ -28,5 +28,5 @@ COPY . ./
 # CMD [ "npm", "run", "start" ]
 # Running the app development
 # CMD [ "npm", "run", "dev" ]
-ENTRYPOINT ["yarn", "run", "deploy"]
+ENTRYPOINT ["npm", "run", "deploy"]
 # ENTRYPOINT ["npm", "run", "start"]
