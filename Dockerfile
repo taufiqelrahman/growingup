@@ -15,6 +15,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
     g++ \
+    && npm -g install pm2 \
     && npm install \
     && apk del build-dependencies
 

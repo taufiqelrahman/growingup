@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "merge_logs": true,
+      "name": "growingup",
+      "out_file": "/tmp/workers.log",
+      "log_date_format": "MM/DD/YYYY HH:mm:ss",
+      "script": "server.js",
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}

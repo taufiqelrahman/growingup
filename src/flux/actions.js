@@ -11,8 +11,8 @@ export function getUsers() {
         data,
       });
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
+      // console.log(err);
     });
 }
 
@@ -22,7 +22,7 @@ export function updateUser(id, data) {
     .then(() => {
       getUsers();
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
+      // console.log(err);
     });
 }
