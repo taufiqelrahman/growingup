@@ -60,10 +60,11 @@ const validateAuth = async (req, res, next) => {
       if (!data.is_admin) redirectNonAdmin(res, next);
       res.cookie('isAdmin', data, { maxAge: 1440000 });
       proceedAdmin(res);
-      return;
+    } else {
+      redirectNonAdmin(res, next);
     }
-    redirectNonAdmin(res, next);
   } catch (err) {
+    console.log(err);
     redirectNonAdmin(res, next);
   }
 };
