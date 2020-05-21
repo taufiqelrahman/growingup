@@ -6,6 +6,7 @@ const path = require('path');
 const helmet = require('helmet');
 const app = express();
 const axios = require('axios');
+const Crypto = require('crypto');
 require('dotenv').config();
 
 app.use(helmet());
@@ -15,16 +16,30 @@ app.get('/ping', function (req, res) {
   return res.send('pong');
 });
 
+const decryptTokenServer = (cryptedToken) => {
+  let result = '';
+  const secretKey = process.env.REACT_APP_SECRET_KEY || '';
+  const secretIv = process.env.REACT_APP_SECRET_IV || '';
+  const decipher = Crypto.createDecipheriv('aes-256-cbc', secretKey, secretIv);
+  const dec = decipher.update(cryptedToken, 'hex', 'utf8');
+  try {
+    result = dec + decipher.final('utf8');
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
+  return result;
+};
+
 const requestValidation = (req) => {
   const userCookie = req.headers.cookie.split(';').filter((cookie) => cookie.includes('user='));
   cryptedToken = userCookie[0].split('=')[1];
   token = cryptedToken ? decryptTokenServer(cryptedToken) : '';
-  const secureOptions = Object.assign({}, options, {
+  const secureOptions = {
+    baseURL: `${process.env.REACT_APP_API_URL}/api`,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  });
+  };
   return axios.get('/is-admin', secureOptions);
 };
 const redirectNonAdmin = (res, next) => {
