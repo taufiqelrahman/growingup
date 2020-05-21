@@ -46,20 +46,17 @@ const redirectNonAdmin = (res, next) => {
   res.redirect(process.env.CLIENT_URL);
   next();
 };
-const proceedAdmin = (res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-};
 const validateAuth = async (req, res, next) => {
   try {
     if (req.cookies['isAdmin']) {
-      proceedAdmin(res);
+      res.sendFile(path.join(__dirname, 'build', 'index.html'));
       return;
     }
     if (req.cookies['user']) {
       const { data } = await requestValidation(req);
       if (!data.is_admin) redirectNonAdmin(res, next);
+      res.sendFile(path.join(__dirname, 'build', 'index.html'));
       res.cookie('isAdmin', data, { maxAge: 1440000 });
-      proceedAdmin(res);
     } else {
       redirectNonAdmin(res, next);
     }
