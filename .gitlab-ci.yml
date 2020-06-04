@@ -1,8 +1,7 @@
+image: tiangolo/docker-with-compose
+
 deploy_production:
   stage: deploy
-  image: docker:stable
-  services:
-    - docker:dind
   tags:
     - production
   only:
@@ -12,8 +11,6 @@ deploy_production:
     - master
   when: manual
   before_script:
-    - docker info
-    - apk add --no-cache docker-compose git
     - echo CLIENT_URL="$CLIENT_URL" >> .env
     - echo REACT_APP_API_URL="$REACT_APP_API_URL" >> .env
     - echo REACT_APP_SECRET_KEY="$REACT_APP_SECRET_KEY" >> .env
