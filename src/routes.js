@@ -7,6 +7,7 @@ import { DefaultLayout } from './layouts';
 // Route Views
 import BlogOverview from './views/BlogOverview';
 import Users from './views/Users';
+import Printing from './views/Printing';
 // import UserProfileLite from "./views/UserProfileLite";
 // import AddNewPost from "./views/AddNewPost";
 import Errors from './views/Errors';
@@ -26,6 +27,12 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: Users,
+  },
+  {
+    path: '/printing',
+    exact: true,
+    layout: DefaultLayout,
+    component: Printing,
   },
   // {
   //   path: "/blog-overview",

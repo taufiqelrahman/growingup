@@ -26,3 +26,39 @@ export function updateUser(id, data) {
       // console.log(err);
     });
 }
+
+export function getOrders() {
+  api()
+    .orders.get()
+    .then(({ data }) => {
+      const { orders, order_printing: printings } = data.data;
+      let result = {};
+      orders.forEach((order) => {
+        result[`WIGU-${order.order_number}`] = order;
+      });
+      printings.forEach((printing) => {
+        result[printing.order_number] = {
+          ...result[printing.order_number],
+          ...printing,
+        };
+      });
+      dispatcher.dispatch({
+        actionType: constants.GET_ORDERS,
+        data: Object.values(result),
+      });
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
+export function updateOrder(id, data) {
+  api()
+    .orders.update(id, data)
+    .then(() => {
+      getOrders();
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}

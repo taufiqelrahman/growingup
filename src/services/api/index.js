@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Users from './users';
+import Orders from './orders';
 import { decryptTokenClient, decryptTokenServer } from '../../lib/crypto';
 require('dotenv').config();
 
@@ -46,5 +47,6 @@ export default (req) => {
   };
   return {
     users: new Users(adapter),
+    orders: new Orders(adapter),
   };
 };
