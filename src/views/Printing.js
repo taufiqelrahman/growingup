@@ -19,12 +19,23 @@ import store from '../flux/store';
 import printingStates from '../config/printing-states';
 import PageTitle from '../components/common/PageTitle';
 
+const sortEnum = {
+  DAYS_LEFT: 'created_at',
+  STATUS: 'printing_state',
+};
+
 const Printing = () => {
-  const [orders, setOrders] = useState(store.getOrders());
+  const [orders, setOrders] = useState([]);
   const [uiState, setUiState] = useState({
     isEdit: false,
     modal: false,
     modalData: [],
+  });
+  const [filterState, setFilterState] = useState({
+    filteredStatus: '',
+    filteredOrderNumber: '',
+    sortByColumn: '',
+    sortByDescending: true,
   });
   const [formData, setFormData] = useState({
     status: '',
@@ -35,8 +46,33 @@ const Printing = () => {
     if (store.getOrders().length === 0) getOrders();
     return () => store.removeChangeListener(onChange);
   }, []);
+  useEffect(() => {
+    const { filteredStatus, filteredOrderNumber, sortByColumn, sortByDescending } = filterState;
+    let filteredOrders = [...store.getOrders()];
+    if (filteredStatus || filteredOrderNumber) {
+      filteredOrders = filteredOrders.filter((order) => {
+        let eligible = false;
+        if (filteredStatus) eligible = order.printings.printing_state === filteredStatus;
+        if (filteredOrderNumber) eligible = order.order_number.includes(filteredOrderNumber);
+        return eligible;
+      });
+    }
+    if (sortByColumn) {
+      filteredOrders = filteredOrders.sort((a, b) => {
+        if (sortByColumn === sortEnum.DAYS_LEFT) {
+          if (sortByDescending) return new Date(b.printings[sortByColumn]) - new Date(a.printings[sortByColumn]);
+          return new Date(a.printings[sortByColumn]) - new Date(b.printings[sortByColumn]);
+        } else {
+          if (a.printings[sortByColumn] < b.printings[sortByColumn]) return sortByDescending ? 1 : -1;
+          if (a.printings[sortByColumn] > b.printings[sortByColumn]) return sortByDescending ? -1 : 1;
+          return 0;
+        }
+      });
+    }
+    // console.log(filteredOrders.map((ord) => ord.id));
+    setOrders(filteredOrders);
+  }, [filterState]);
   function onChange() {
-    // console.log(store.getOrders());
     setOrders(store.getOrders());
   }
   const calculateDays = (paid_date) => {
@@ -70,6 +106,13 @@ const Printing = () => {
     updateOrder(order.id, formData);
     cancelEdit();
   };
+  const toggleSort = (type) => {
+    if (filterState.sortByColumn === type) {
+      setFilterState({ ...filterState, sortByDescending: !filterState.sortByDescending });
+    } else {
+      setFilterState({ ...filterState, sortByColumn: type, sortByDescending: true });
+    }
+  };
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -82,7 +125,39 @@ const Printing = () => {
       <Row>
         <Col>
           <Card small className="mb-4">
-            <CardHeader className="border-bottom">Filter</CardHeader>
+            <CardHeader className="border-bottom">
+              <h5>Filter</h5>
+              <Row>
+                <Col sm="3">
+                  <FormGroup>
+                    <FormInput
+                      id="filterOrderNumber"
+                      placeholder="Order Number"
+                      defaultValue={filterState.filteredOrderNumber}
+                      onChange={(e) => setFilterState({ ...filterState, filteredOrderNumber: e.target.value })}
+                      size="sm"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col sm="3">
+                  <FormGroup>
+                    <FormSelect
+                      id="filterStatus"
+                      defaultValue={filterState.filteredStatus}
+                      onChange={(e) => setFilterState({ ...filterState, filteredStatus: e.target.value })}
+                      size="sm"
+                    >
+                      <option value="">Select status</option>
+                      {printingStates.map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </FormSelect>
+                  </FormGroup>
+                </Col>
+              </Row>
+            </CardHeader>
             <CardBody className="p-0 pb-3">
               <table className="table mb-0">
                 <thead className="bg-light">
@@ -90,11 +165,33 @@ const Printing = () => {
                     <th scope="col" className="border-0" width="15%">
                       Nomor Order
                     </th>
-                    <th scope="col" className="border-0" width="20%">
+                    <th
+                      scope="col"
+                      className="border-0"
+                      width="20%"
+                      onClick={() => toggleSort(sortEnum.STATUS)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       Status
+                      {filterState.sortByColumn === sortEnum.STATUS && (
+                        <i className="material-icons">
+                          {filterState.sortByDescending ? 'arrow_drop_down' : 'arrow_drop_up'}
+                        </i>
+                      )}
                     </th>
-                    <th scope="col" className="border-0" width="9%">
+                    <th
+                      scope="col"
+                      className="border-0"
+                      width="9%"
+                      onClick={() => toggleSort(sortEnum.DAYS_LEFT)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       Sisa Hari
+                      {filterState.sortByColumn === sortEnum.DAYS_LEFT && (
+                        <i className="material-icons">
+                          {filterState.sortByDescending ? 'arrow_drop_down' : 'arrow_drop_up'}
+                        </i>
+                      )}
                     </th>
                     <th scope="col" className="border-0" width={uiState.isEdit ? '25%' : null}>
                       Folder
@@ -149,19 +246,21 @@ const Printing = () => {
                           </a>
                         )}
                       </td>
-                      {order.shipping_address && (
-                        <td>
-                          <div>{order.shipping_address.name}</div>
-                          <div>{order.shipping_address.phone}</div>
-                          <div>{order.shipping_address.address1}</div>
-                          {order.shipping_address.address2 && <div>{order.shipping_address.address2}</div>}
-                          <div>
-                            {order.shipping_address.city}&nbsp;
-                            {order.shipping_address.province}&nbsp;
-                            {order.shipping_address.zip}
-                          </div>
-                        </td>
-                      )}
+                      <td>
+                        {order.shipping_address && (
+                          <Fragment>
+                            <div>{order.shipping_address.name}</div>
+                            <div>{order.shipping_address.phone}</div>
+                            <div>{order.shipping_address.address1}</div>
+                            {order.shipping_address.address2 && <div>{order.shipping_address.address2}</div>}
+                            <div>
+                              {order.shipping_address.city}&nbsp;
+                              {order.shipping_address.province}&nbsp;
+                              {order.shipping_address.zip}
+                            </div>
+                          </Fragment>
+                        )}
+                      </td>
                       {/* <td>
                         {isEdit === order.id ? (
                           <FormGroup>
