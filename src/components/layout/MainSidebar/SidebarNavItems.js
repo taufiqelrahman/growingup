@@ -10,6 +10,7 @@ class SidebarNavItems extends React.Component {
 
     this.state = {
       navItems: Store.getSidebarItems(),
+      me: Store.getMe(),
     };
 
     this.onChange = this.onChange.bind(this);
@@ -27,6 +28,7 @@ class SidebarNavItems extends React.Component {
     this.setState({
       ...this.state,
       navItems: Store.getSidebarItems(),
+      me: Store.getMe(),
     });
   }
 
@@ -35,9 +37,11 @@ class SidebarNavItems extends React.Component {
     return (
       <div className="nav-wrapper">
         <Nav className="nav--no-borders flex-column">
-          {items.map((item, idx) => (
-            <SidebarNavItem key={idx} item={item} />
-          ))}
+          {this.state.me &&
+            items.map((item, idx) => {
+              if (!item.adminRoles.includes(this.state.me.is_admin)) return null;
+              return <SidebarNavItem key={idx} item={item} />;
+            })}
         </Nav>
       </div>
     );

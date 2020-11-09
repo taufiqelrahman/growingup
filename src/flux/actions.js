@@ -16,6 +16,20 @@ export function getUsers() {
     });
 }
 
+export function getMe() {
+  api()
+    .users.me()
+    .then(({ data }) => {
+      dispatcher.dispatch({
+        actionType: constants.GET_ME,
+        data,
+      });
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
 export function updateUser(id, data) {
   api()
     .users.update(id, data)

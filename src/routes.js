@@ -21,18 +21,21 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: BlogOverview,
+    adminRoles: [],
   },
   {
     path: '/users',
     exact: true,
     layout: DefaultLayout,
     component: Users,
+    adminRoles: [1],
   },
   {
     path: '/printing',
     exact: true,
     layout: DefaultLayout,
     component: Printing,
+    adminRoles: [1, 2],
   },
   // {
   //   path: "/blog-overview",
@@ -53,6 +56,7 @@ export default [
     path: '/error',
     layout: DefaultLayout,
     component: Errors,
+    adminRoles: [],
   },
   // {
   //   path: "/components-overview",

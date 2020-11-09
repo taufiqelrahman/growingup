@@ -25,7 +25,8 @@ const sortEnum = {
 };
 
 const Printing = () => {
-  const [orders, setOrders] = useState([]);
+  const [me, setMe] = useState(store.getMe());
+  const [orders, setOrders] = useState(store.getOrders());
   const [uiState, setUiState] = useState({
     isEdit: false,
     modal: false,
@@ -74,6 +75,7 @@ const Printing = () => {
   }, [filterState]);
   function onChange() {
     setOrders(store.getOrders());
+    setMe(store.getMe());
   }
   const calculateDays = (paid_date) => {
     const paidDate = new Date(paid_date);
@@ -295,15 +297,17 @@ const Printing = () => {
                           </Fragment>
                         ) : (
                           <Fragment>
-                            <Button
-                              outline
-                              size="sm"
-                              theme="warning"
-                              className="mb-2 mr-1"
-                              onClick={() => onEdit(order)}
-                            >
-                              Ubah
-                            </Button>
+                            {me && me.is_admin === 1 && (
+                              <Button
+                                outline
+                                size="sm"
+                                theme="warning"
+                                className="mb-2 mr-1"
+                                onClick={() => onEdit(order)}
+                              >
+                                Ubah
+                              </Button>
+                            )}
                             <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
                               Lihat Buku
                             </Button>

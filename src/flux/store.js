@@ -10,6 +10,7 @@ let _store = {
   menuVisible: false,
   navItems: getSidebarNavItems(),
   users: [],
+  me: null,
   orders: [],
 };
 
@@ -25,6 +26,10 @@ class Store extends EventEmitter {
 
   getUsers() {
     return _store.users;
+  }
+
+  getMe() {
+    return _store.me;
   }
 
   getOrders() {
@@ -52,6 +57,9 @@ dispatcher.register((action) => {
       break;
     case CONSTANTS.GET_USERS:
       _store.users = action.data;
+      break;
+    case CONSTANTS.GET_ME:
+      _store.me = action.data;
       break;
     case CONSTANTS.GET_ORDERS:
       _store.orders = action.data;

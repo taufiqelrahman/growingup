@@ -10,11 +10,13 @@ export default function () {
       title: 'Users',
       htmlBefore: '<i class="material-icons">people</i>',
       to: '/users',
+      adminRoles: [1],
     },
     {
       title: 'Printing',
       htmlBefore: '<i class="material-icons">print</i>',
       to: '/printing',
+      adminRoles: [1, 2],
     },
     // {
     //   title: 'Book Contents',

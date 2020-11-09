@@ -1,5 +1,6 @@
 export default {
   TOGGLE_SIDEBAR: 'TOGGLE_SIDEBAR',
   GET_USERS: 'GET_USERS',
+  GET_ME: 'GET_ME',
   GET_ORDERS: 'GET_ORDERS',
 };
