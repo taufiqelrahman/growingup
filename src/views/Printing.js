@@ -160,7 +160,7 @@ const Printing = () => {
                 </Col>
               </Row>
             </CardHeader>
-            <CardBody className="p-0 pb-3">
+            <CardBody className="p-0 pb-3" style={{ overflowX: 'auto' }}>
               <table className="table mb-0">
                 <thead className="bg-light">
                   <tr>
@@ -263,22 +263,6 @@ const Printing = () => {
                           </Fragment>
                         )}
                       </td>
-                      {/* <td>
-                        {isEdit === order.id ? (
-                          <FormGroup>
-                            <FormInput
-                              id="inputPhone"
-                              placeholder="Phone"
-                              defaultValue={order.phone}
-                              onChange={onTextChange}
-                              size="sm"
-                              type="number"
-                            />
-                          </FormGroup>
-                        ) : (
-                          order.phone
-                        )}
-                        </td> */}
                       <td>
                         {uiState.isEdit === order.id ? (
                           <Fragment>

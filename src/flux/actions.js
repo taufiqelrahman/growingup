@@ -58,7 +58,7 @@ export function getOrders() {
       });
       dispatcher.dispatch({
         actionType: constants.GET_ORDERS,
-        data: Object.values(result),
+        data: Object.values(result).filter((order) => !!order.printings),
       });
     })
     .catch(() => {

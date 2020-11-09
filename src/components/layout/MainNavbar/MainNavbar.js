@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Container, Navbar } from 'shards-react';
 
-import NavbarSearch from './NavbarSearch';
+import store from '../../../flux/store';
+// import NavbarSearch from './NavbarSearch';
 // import NavbarNav from './NavbarNav/NavbarNav';
 import NavbarToggle from './NavbarToggle';
 
 const MainNavbar = ({ stickyTop }) => {
+  const [me, setMe] = useState(store.getMe());
   const classes = classNames('main-navbar', 'bg-white', stickyTop && 'sticky-top');
+  useEffect(() => {
+    store.addChangeListener(onChange);
+    return () => store.removeChangeListener(onChange);
+  }, []);
+  function onChange() {
+    setMe(store.getMe());
+  }
 
   return (
     <div className={classes}>
       <Container className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          <NavbarSearch />
-          {/* <NavbarNav /> */}
           <NavbarToggle />
+          <div className="admin-name">{me ? me.name : ''}</div>
+          {/* <NavbarSearch /> */}
+          {/* <NavbarNav /> */}
         </Navbar>
       </Container>
+      <style jsx>{`
+        .admin-name {
+          align-items: center;
+          padding: 0 1.5rem;
+          font-weight: 600;
+        }
+      `}</style>
     </div>
   );
 };
