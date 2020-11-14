@@ -18,24 +18,22 @@ const MainNavbar = ({ stickyTop }) => {
   function onChange() {
     setMe(store.getMe());
   }
+  const adminName = {
+    alignItems: 'center',
+    padding: '0 1.5rem',
+    fontWeight: 600,
+  };
 
   return (
     <div className={classes}>
       <Container className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
           <NavbarToggle />
-          <div className="admin-name">{me ? me.name : ''}</div>
+          <div style={adminName}>{me ? me.name : ''}</div>
           {/* <NavbarSearch /> */}
           {/* <NavbarNav /> */}
         </Navbar>
       </Container>
-      <style jsx>{`
-        .admin-name {
-          align-items: center;
-          padding: 0 1.5rem;
-          font-weight: 600;
-        }
-      `}</style>
     </div>
   );
 };

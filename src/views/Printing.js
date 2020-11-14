@@ -81,7 +81,17 @@ const Printing = () => {
     const paidDate = new Date(paid_date);
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate - paidDate);
-    return 7 - Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const days = 7 - Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return days > 0 ? days : 0;
+  };
+
+  const previewNames = (order) => {
+    if (!order.line_items) return '';
+    const names = order.line_items.map((item) => {
+      const { value: name } = item.properties.find((prop) => prop.name === 'Name');
+      return name;
+    });
+    return names.join(', ');
   };
 
   const onEdit = (order) => {
@@ -199,6 +209,9 @@ const Printing = () => {
                       Folder
                     </th>
                     <th scope="col" className="border-0">
+                      Nama
+                    </th>
+                    <th scope="col" className="border-0">
                       Alamat
                     </th>
                     <th scope="col" className="border-0" width="20%">
@@ -242,12 +255,15 @@ const Printing = () => {
                               size="sm"
                             />
                           </FormGroup>
-                        ) : (
+                        ) : order.printings.source_path ? (
                           <a href={order.printings.source_path} target="_blank" rel="noreferrer">
                             <i className="material-icons">folder_open</i>
                           </a>
+                        ) : (
+                          '-'
                         )}
                       </td>
+                      <td>{previewNames(order)}</td>
                       <td>
                         {order.shipping_address && (
                           <Fragment>
@@ -292,9 +308,11 @@ const Printing = () => {
                                 Ubah
                               </Button>
                             )}
-                            <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
-                              Lihat Buku
-                            </Button>
+                            {order.line_items && (
+                              <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
+                                Lihat Buku
+                              </Button>
+                            )}
                           </Fragment>
                         )}
                       </td>
