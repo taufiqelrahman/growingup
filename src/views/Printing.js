@@ -14,7 +14,7 @@ import {
   ModalHeader,
   FormSelect,
 } from 'shards-react';
-import { getOrders, updateOrder } from '../flux/actions';
+import { getOrders, updateOrder, fulfillOrder, updateFulfillment } from '../flux/actions';
 import store from '../flux/store';
 import printingStates from '../config/printing-states';
 import PageTitle from '../components/common/PageTitle';
@@ -31,6 +31,8 @@ const Printing = () => {
     isEdit: false,
     modal: false,
     modalData: [],
+    receiptModal: false,
+    orderId: '',
   });
   const [filterState, setFilterState] = useState({
     filteredStatus: '',
@@ -41,6 +43,12 @@ const Printing = () => {
   const [formData, setFormData] = useState({
     status: '',
     path: '',
+  });
+  const [fulfillmentData, setFulfillmentData] = useState({
+    id: '',
+    tracking_number: '',
+    tracking_company: '',
+    orderId: '',
   });
   useEffect(() => {
     store.addChangeListener(onChange);
@@ -124,6 +132,32 @@ const Printing = () => {
     } else {
       setFilterState({ ...filterState, sortByColumn: type, sortByDescending: true });
     }
+  };
+  const onFulfillOrder = () => {
+    const { tracking_number, trackin_url, tracking_company } = fulfillmentData;
+    fulfillOrder(uiState.orderId, { tracking_number, trackin_url, tracking_company });
+    closeReceiptModal();
+  };
+  const onUpdateFulfillment = () => {
+    const { id, tracking_number, tracking_company } = fulfillmentData;
+    updateFulfillment(uiState.orderId, id, { id, tracking_number, tracking_company });
+    closeReceiptModal();
+  };
+  const viewFulfillment = (order) => {
+    const [fulfillment] = order.fulfillments;
+    if (fulfillment) {
+      const { id, tracking_number, tracking_company } = fulfillment;
+      setFulfillmentData({ id, tracking_number, tracking_company });
+    }
+    setUiState({ ...uiState, receiptModal: true, orderId: order.shopify_order_id });
+  };
+  const closeReceiptModal = () => {
+    setUiState({ ...uiState, receiptModal: false, orderId: '' });
+    setFulfillmentData({
+      id: '',
+      tracking_number: '',
+      tracking_company: '',
+    });
   };
 
   return (
@@ -294,6 +328,15 @@ const Printing = () => {
                             <Button outline size="sm" theme="secondary" className="mb-2 mr-1" onClick={cancelEdit}>
                               Batal
                             </Button>
+                            <Button
+                              outline
+                              size="sm"
+                              theme="dark"
+                              className="mb-2 mr-1"
+                              onClick={() => viewFulfillment(order)}
+                            >
+                              Resi
+                            </Button>
                           </Fragment>
                         ) : (
                           <Fragment>
@@ -371,6 +414,39 @@ const Printing = () => {
             </table>
           </ModalBody>
         )}
+      </Modal>
+      <Modal open={uiState.receiptModal} toggle={() => setUiState({ ...uiState, receiptModal: !uiState.receiptModal })}>
+        <ModalHeader>Resi</ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label htmlFor="inputTrackingNumber">Nomor Resi</label>
+            <FormInput
+              id="inputTrackingNumber"
+              placeholder="Nomor Resi"
+              defaultValue={fulfillmentData.tracking_number}
+              onChange={(e) => setFulfillmentData({ ...fulfillmentData, tracking_number: e.target.value })}
+              size="sm"
+            />
+          </FormGroup>
+          <FormGroup>
+            <label htmlFor="inputTrackingCompany">Nama Ekspedisi</label>
+            <FormInput
+              id="inputTrackingCompany"
+              placeholder="Nama Ekspedisi"
+              defaultValue={fulfillmentData.tracking_company}
+              onChange={(e) => setFulfillmentData({ ...fulfillmentData, tracking_company: e.target.value })}
+              size="sm"
+            />
+          </FormGroup>
+          <Button
+            outline
+            size="sm"
+            className="mb-2 mr-1"
+            onClick={() => (fulfillmentData.id ? onUpdateFulfillment() : onFulfillOrder())}
+          >
+            Simpan
+          </Button>
+        </ModalBody>
       </Modal>
     </Container>
   );

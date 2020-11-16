@@ -48,7 +48,7 @@ export function getOrders() {
       const { orders, order_printing: printings } = data.data;
       let result = {};
       orders.forEach((order) => {
-        result[`WIGU-${order.order_number}`] = order;
+        result[`WIGU-${order.order_number}`] = { ...order };
       });
       printings.forEach((printing) => {
         result[printing.order_number] = {
@@ -69,6 +69,28 @@ export function getOrders() {
 export function updateOrder(id, data) {
   api()
     .orders.update(id, data)
+    .then(() => {
+      getOrders();
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
+export function fulfillOrder(id, data) {
+  api()
+    .orders.fulfill(id, data)
+    .then(() => {
+      getOrders();
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
+export function updateFulfillment(id, fulfillmentId, data) {
+  api()
+    .orders.updateFulfillment(id, fulfillmentId, data)
     .then(() => {
       getOrders();
     })
