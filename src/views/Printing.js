@@ -328,28 +328,30 @@ const Printing = () => {
                             <Button outline size="sm" theme="secondary" className="mb-2 mr-1" onClick={cancelEdit}>
                               Batal
                             </Button>
-                            <Button
-                              outline
-                              size="sm"
-                              theme="dark"
-                              className="mb-2 mr-1"
-                              onClick={() => viewFulfillment(order)}
-                            >
-                              Resi
-                            </Button>
                           </Fragment>
                         ) : (
                           <Fragment>
                             {me && me.is_admin === 1 && (
-                              <Button
-                                outline
-                                size="sm"
-                                theme="warning"
-                                className="mb-2 mr-1"
-                                onClick={() => onEdit(order)}
-                              >
-                                Ubah
-                              </Button>
+                              <Fragment>
+                                <Button
+                                  outline
+                                  size="sm"
+                                  theme="warning"
+                                  className="mb-2 mr-1"
+                                  onClick={() => onEdit(order)}
+                                >
+                                  Ubah
+                                </Button>
+                                <Button
+                                  outline
+                                  size="sm"
+                                  theme="dark"
+                                  className="mb-2 mr-1"
+                                  onClick={() => viewFulfillment(order)}
+                                >
+                                  Resi
+                                </Button>
+                              </Fragment>
                             )}
                             {order.line_items && (
                               <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
@@ -396,6 +398,9 @@ const Printing = () => {
                   <th scope="col" className="border-0">
                     Bahasa
                   </th>
+                  <th scope="col" className="border-0">
+                    Cover
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -408,6 +413,7 @@ const Printing = () => {
                     <td>{data.Skin}</td>
                     <td>{data.Occupations}</td>
                     <td>{data.Language}</td>
+                    <td>{data.Cover}</td>
                   </tr>
                 ))}
               </tbody>
