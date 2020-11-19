@@ -401,6 +401,9 @@ const Printing = () => {
                   <th scope="col" className="border-0">
                     Cover
                   </th>
+                  <th scope="col" className="border-0">
+                    Dedication
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -414,6 +417,7 @@ const Printing = () => {
                     <td>{data.Occupations}</td>
                     <td>{data.Language}</td>
                     <td>{data.Cover}</td>
+                    <td>{data.Dedication}</td>
                   </tr>
                 ))}
               </tbody>
