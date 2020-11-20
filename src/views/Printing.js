@@ -248,7 +248,10 @@ const Printing = () => {
                     <th scope="col" className="border-0">
                       Alamat
                     </th>
-                    <th scope="col" className="border-0" width="20%">
+                    <th scope="col" className="border-0">
+                      Notes
+                    </th>
+                    <th scope="col" className="border-0" width="15%">
                       Action
                     </th>
                   </tr>
@@ -312,6 +315,9 @@ const Printing = () => {
                             </div>
                           </Fragment>
                         )}
+                      </td>
+                      <td>
+                        <div dangerouslySetInnerHTML={{ __html: order.printings.note }} />
                       </td>
                       <td>
                         {uiState.isEdit === order.id ? (
