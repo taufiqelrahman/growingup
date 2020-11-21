@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -12,8 +12,8 @@ import {
   FormInput,
   FormSelect,
   FormTextarea,
-  Button
-} from "shards-react";
+  Button,
+} from 'shards-react';
 
 const UserAccountDetails = ({ title }) => (
   <Card small className="mb-4">
@@ -29,22 +29,12 @@ const UserAccountDetails = ({ title }) => (
                 {/* First Name */}
                 <Col md="6" className="form-group">
                   <label htmlFor="feFirstName">First Name</label>
-                  <FormInput
-                    id="feFirstName"
-                    placeholder="First Name"
-                    value="Sierra"
-                    onChange={() => {}}
-                  />
+                  <FormInput id="feFirstName" placeholder="First Name" value="Sierra" onChange={() => {}} />
                 </Col>
                 {/* Last Name */}
                 <Col md="6" className="form-group">
                   <label htmlFor="feLastName">Last Name</label>
-                  <FormInput
-                    id="feLastName"
-                    placeholder="Last Name"
-                    value="Brooks"
-                    onChange={() => {}}
-                  />
+                  <FormInput id="feLastName" placeholder="Last Name" value="Brooks" onChange={() => {}} />
                 </Col>
               </Row>
               <Row form>
@@ -75,22 +65,13 @@ const UserAccountDetails = ({ title }) => (
               </Row>
               <FormGroup>
                 <label htmlFor="feAddress">Address</label>
-                <FormInput
-                  id="feAddress"
-                  placeholder="Address"
-                  value="1234 Main St."
-                  onChange={() => {}}
-                />
+                <FormInput id="feAddress" placeholder="Address" value="1234 Main St." onChange={() => {}} />
               </FormGroup>
               <Row form>
                 {/* City */}
                 <Col md="6" className="form-group">
                   <label htmlFor="feCity">City</label>
-                  <FormInput
-                    id="feCity"
-                    placeholder="City"
-                    onChange={() => {}}
-                  />
+                  <FormInput id="feCity" placeholder="City" onChange={() => {}} />
                 </Col>
                 {/* State */}
                 <Col md="4" className="form-group">
@@ -103,11 +84,7 @@ const UserAccountDetails = ({ title }) => (
                 {/* Zip Code */}
                 <Col md="2" className="form-group">
                   <label htmlFor="feZipCode">Zip</label>
-                  <FormInput
-                    id="feZipCode"
-                    placeholder="Zip"
-                    onChange={() => {}}
-                  />
+                  <FormInput id="feZipCode" placeholder="Zip" onChange={() => {}} />
                 </Col>
               </Row>
               <Row form>
@@ -130,11 +107,11 @@ UserAccountDetails.propTypes = {
   /**
    * The component's title.
    */
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 UserAccountDetails.defaultProps = {
-  title: "Account Details"
+  title: 'Account Details',
 };
 
 export default UserAccountDetails;

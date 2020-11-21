@@ -3,8 +3,8 @@ import Crypto from 'crypto';
 require('dotenv').config();
 
 // for server
-const secretKey = process.env.SECRET_KEY || '';
-const secretIv = process.env.SECRET_IV || '';
+const secretKey = process.env.REACT_APP_SECRET_KEY || '';
+const secretIv = process.env.REACT_APP_SECRET_IV || '';
 // for client
 const parsedKey = CryptoJS.enc.Utf8.parse(secretKey);
 const parsedIv = CryptoJS.enc.Utf8.parse(secretIv);
@@ -15,7 +15,7 @@ export function encryptTokenClient(token) {
   return json.ciphertext.toString(CryptoJS.enc.Hex);
 }
 
-export const decryptTokenClient = cryptedToken => {
+export const decryptTokenClient = (cryptedToken) => {
   let result = '';
   const options = { mode: CryptoJS.mode.CBC, iv: parsedIv };
   try {
@@ -27,17 +27,19 @@ export const decryptTokenClient = cryptedToken => {
       options,
     );
     result = json.toString(CryptoJS.enc.Utf8);
-  } catch {}
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
   return result;
 };
 
-export const decryptTokenServer = cryptedToken => {
+export const decryptTokenServer = (cryptedToken) => {
   let result = '';
   const decipher = Crypto.createDecipheriv('aes-256-cbc', secretKey, secretIv);
   const dec = decipher.update(cryptedToken, 'hex', 'utf8');
   try {
     result = dec + decipher.final('utf8');
-  } catch {}
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
   return result;
 };
 
