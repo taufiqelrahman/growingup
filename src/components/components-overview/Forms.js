@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Row,
   Col,
@@ -8,8 +8,8 @@ import {
   FormGroup,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
-} from "shards-react";
+  InputGroupText,
+} from 'shards-react';
 
 const Forms = () => (
   <Col sm="12" md="6">
@@ -24,19 +24,10 @@ const Forms = () => (
         </InputGroup>
       </FormGroup>
       <FormGroup>
-        <FormInput
-          type="password"
-          placeholder="Password"
-          value="myCoolPassword"
-          onChange={() => {}}
-        />
+        <FormInput type="password" placeholder="Password" value="myCoolPassword" onChange={() => {}} />
       </FormGroup>
       <FormGroup>
-        <FormInput
-          placeholder="1234 Main St"
-          value="7898 Kensington Junction, New York, USA"
-          onChange={() => {}}
-        />
+        <FormInput placeholder="1234 Main St" value="7898 Kensington Junction, New York, USA" onChange={() => {}} />
       </FormGroup>
       <Row form>
         <Col md="7">

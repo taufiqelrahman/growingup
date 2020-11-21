@@ -1,58 +1,76 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+// import React from "react";
+// import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DefaultLayout } from "./layouts";
+import { DefaultLayout } from './layouts';
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
-import UserProfileLite from "./views/UserProfileLite";
-import AddNewPost from "./views/AddNewPost";
-import Errors from "./views/Errors";
-import ComponentsOverview from "./views/ComponentsOverview";
-import Tables from "./views/Tables";
-import BlogPosts from "./views/BlogPosts";
+import BlogOverview from './views/BlogOverview';
+import Users from './views/Users';
+import Printing from './views/Printing';
+// import UserProfileLite from "./views/UserProfileLite";
+// import AddNewPost from "./views/AddNewPost";
+import Errors from './views/Errors';
+// import ComponentsOverview from "./views/ComponentsOverview";
+// import Tables from "./views/Tables";
+// import BlogPosts from "./views/BlogPosts";
 
 export default [
   {
-    path: "/",
+    path: '/',
     exact: true,
     layout: DefaultLayout,
-    component: BlogOverview
+    component: BlogOverview,
+    adminRoles: [],
   },
   {
-    path: "/blog-overview",
+    path: '/users',
+    exact: true,
     layout: DefaultLayout,
-    component: BlogOverview
+    component: Users,
+    adminRoles: [1],
   },
   {
-    path: "/user-profile-lite",
+    path: '/printing',
+    exact: true,
     layout: DefaultLayout,
-    component: UserProfileLite
+    component: Printing,
+    adminRoles: [1, 2],
   },
+  // {
+  //   path: "/blog-overview",
+  //   layout: DefaultLayout,
+  //   component: BlogOverview
+  // },
+  // {
+  //   path: "/user-profile-lite",
+  //   layout: DefaultLayout,
+  //   component: UserProfileLite
+  // },
+  // {
+  //   path: "/add-new-post",
+  //   layout: DefaultLayout,
+  //   component: AddNewPost
+  // },
   {
-    path: "/add-new-post",
+    path: '/error',
     layout: DefaultLayout,
-    component: AddNewPost
+    component: Errors,
+    adminRoles: [],
   },
-  {
-    path: "/errors",
-    layout: DefaultLayout,
-    component: Errors
-  },
-  {
-    path: "/components-overview",
-    layout: DefaultLayout,
-    component: ComponentsOverview
-  },
-  {
-    path: "/tables",
-    layout: DefaultLayout,
-    component: Tables
-  },
-  {
-    path: "/blog-posts",
-    layout: DefaultLayout,
-    component: BlogPosts
-  }
+  // {
+  //   path: "/components-overview",
+  //   layout: DefaultLayout,
+  //   component: ComponentsOverview
+  // },
+  // {
+  //   path: "/tables",
+  //   layout: DefaultLayout,
+  //   component: Tables
+  // },
+  // {
+  //   path: "/blog-posts",
+  //   layout: DefaultLayout,
+  //   component: BlogPosts
+  // }
 ];

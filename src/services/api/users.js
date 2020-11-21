@@ -3,7 +3,15 @@ export default class Products {
     this.adapter = adapter;
   }
 
-  isAdmin(data) {
-    return this.adapter.secure.get('/is-admin');
+  get() {
+    return this.adapter.secure.get('/users');
+  }
+
+  update(id, data) {
+    return this.adapter.secure.patch(`/users/${id}`, data);
+  }
+
+  me() {
+    return this.adapter.secure.get('/me');
   }
 }

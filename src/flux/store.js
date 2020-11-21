@@ -1,38 +1,21 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
 
-import Dispatcher from "./dispatcher";
-import Constants from "./constants";
-import getSidebarNavItems from "../data/sidebar-nav-items";
+import dispatcher from './dispatcher';
+import CONSTANTS from './constants';
+import getSidebarNavItems from '../config/sidebar-nav-items';
+
+const CHANGE_EVENT = 'change';
 
 let _store = {
   menuVisible: false,
-  navItems: getSidebarNavItems()
+  navItems: getSidebarNavItems(),
+  users: [],
+  me: null,
+  orders: [],
 };
 
 class Store extends EventEmitter {
-  constructor() {
-    super();
-
-    this.registerToActions = this.registerToActions.bind(this);
-    this.toggleSidebar = this.toggleSidebar.bind(this);
-
-    Dispatcher.register(this.registerToActions.bind(this));
-  }
-
-  registerToActions({ actionType, payload }) {
-    switch (actionType) {
-      case Constants.TOGGLE_SIDEBAR:
-        this.toggleSidebar();
-        break;
-      default:
-    }
-  }
-
-  toggleSidebar() {
-    _store.menuVisible = !_store.menuVisible;
-    this.emit(Constants.CHANGE);
-  }
-
+  // retrieve data
   getMenuState() {
     return _store.menuVisible;
   }
@@ -41,13 +24,49 @@ class Store extends EventEmitter {
     return _store.navItems;
   }
 
-  addChangeListener(callback) {
-    this.on(Constants.CHANGE, callback);
+  getUsers() {
+    return _store.users;
   }
 
+  getMe() {
+    return _store.me;
+  }
+
+  getOrders() {
+    return _store.orders;
+  }
+
+  // base
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
   removeChangeListener(callback) {
-    this.removeListener(Constants.CHANGE, callback);
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+  emitChange() {
+    this.emit(CHANGE_EVENT);
   }
 }
 
-export default new Store();
+const store = new Store();
+
+dispatcher.register((action) => {
+  switch (action.actionType) {
+    case CONSTANTS.TOGGLE_SIDEBAR:
+      _store.menuVisible = !_store.menuVisible;
+      break;
+    case CONSTANTS.GET_USERS:
+      _store.users = action.data;
+      break;
+    case CONSTANTS.GET_ME:
+      _store.me = action.data;
+      break;
+    case CONSTANTS.GET_ORDERS:
+      _store.orders = action.data;
+      break;
+    default:
+  }
+  store.emitChange();
+});
+
+export default store;
