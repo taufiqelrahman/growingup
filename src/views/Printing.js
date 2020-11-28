@@ -162,14 +162,11 @@ const Printing = () => {
     });
   };
 
-  const [pagination, setPagination] = useState({
-    page: 0,
-    active: 0,
-  });
+  const [pageActive, setPageActive] = useState(0);
   const paginatedOrders = useMemo(() => {
-    const pageStart = pagination.page + pagination.active * pageSize;
+    const pageStart = pageActive * pageSize;
     return orders.slice(pageStart, pageStart + pageSize);
-  }, [orders, pagination]);
+  }, [orders, pageActive]);
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -391,10 +388,10 @@ const Printing = () => {
         <div className="c-pagination__container">
           {new Array(Math.ceil(orders.length / pageSize)).fill(null).map((_, index) => (
             <div
-              className={`c-pagination__item ${pagination.active === index ? 'c-pagination__item--active' : ''}`}
+              className={`c-pagination__item ${pageActive === index ? 'c-pagination__item--active' : ''}`}
               key={index}
               onClick={() => {
-                if (pagination.active !== index) setPagination({ ...pagination, active: index });
+                if (pageActive !== index) setPageActive(index);
               }}
             >
               {index + 1}
