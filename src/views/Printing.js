@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useMemo } from 'react';
 import {
   Container,
   Row,
@@ -18,11 +18,13 @@ import { getOrders, updateOrder, fulfillOrder, updateFulfillment } from '../flux
 import store from '../flux/store';
 import printingStates from '../config/printing-states';
 import PageTitle from '../components/common/PageTitle';
+import '../assets/pagination.scss';
 
 const sortEnum = {
   DAYS_LEFT: 'created_at',
   STATUS: 'printing_state',
 };
+const pageSize = 10;
 
 const Printing = () => {
   const [me, setMe] = useState(store.getMe());
@@ -160,6 +162,15 @@ const Printing = () => {
     });
   };
 
+  const [pagination, setPagination] = useState({
+    page: 0,
+    active: 0,
+  });
+  const paginatedOrders = useMemo(() => {
+    const pageStart = pagination.page + pagination.active * pageSize;
+    return orders.slice(pageStart, pageStart + pageSize);
+  }, [orders, pagination]);
+
   return (
     <Container fluid className="main-content-container px-4">
       {/* Page Header */}
@@ -257,7 +268,7 @@ const Printing = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => (
+                  {paginatedOrders.map((order) => (
                     <tr key={order.id}>
                       <td>{order.order_number}</td>
                       <td>
@@ -375,6 +386,22 @@ const Printing = () => {
           </Card>
         </Col>
       </Row>
+
+      <div className="c-pagination">
+        <div className="c-pagination__container">
+          {new Array(Math.ceil(orders.length / pageSize)).fill(null).map((_, index) => (
+            <div
+              className={`c-pagination__item ${pagination.active === index ? 'c-pagination__item--active' : ''}`}
+              key={index}
+              onClick={() => {
+                if (pagination.active !== index) setPagination({ ...pagination, active: index });
+              }}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
+      </div>
 
       <Modal open={uiState.modal} toggle={() => setUiState({ ...uiState, modal: !uiState.modal })} size="lg">
         <ModalHeader>Buku</ModalHeader>
