@@ -167,6 +167,9 @@ const Printing = () => {
     const pageStart = pageActive * pageSize;
     return orders.slice(pageStart, pageStart + pageSize);
   }, [orders, pageActive]);
+  const paginationSize = useMemo(() => {
+    return Math.ceil(orders.length / pageSize);
+  }, [orders]);
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -384,21 +387,23 @@ const Printing = () => {
         </Col>
       </Row>
 
-      <div className="c-pagination">
-        <div className="c-pagination__container">
-          {new Array(Math.ceil(orders.length / pageSize)).fill(null).map((_, index) => (
-            <div
-              className={`c-pagination__item ${pageActive === index ? 'c-pagination__item--active' : ''}`}
-              key={index}
-              onClick={() => {
-                if (pageActive !== index) setPageActive(index);
-              }}
-            >
-              {index + 1}
-            </div>
-          ))}
+      {paginationSize > 1 && (
+        <div className="c-pagination">
+          <div className="c-pagination__container">
+            {new Array(paginationSize).fill(null).map((_, index) => (
+              <div
+                className={`c-pagination__item ${pageActive === index ? 'c-pagination__item--active' : ''}`}
+                key={index}
+                onClick={() => {
+                  if (pageActive !== index) setPageActive(index);
+                }}
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <Modal open={uiState.modal} toggle={() => setUiState({ ...uiState, modal: !uiState.modal })} size="lg">
         <ModalHeader>Buku</ModalHeader>
