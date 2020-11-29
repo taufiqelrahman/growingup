@@ -96,7 +96,7 @@ const Printing = () => {
   };
 
   const previewNames = (order) => {
-    if (!order.line_items) return '';
+    if (!order.line_items) return '-';
     const names = order.line_items.map((item) => {
       const { value: name } = item.properties.find((prop) => prop.name === 'Name');
       return name;
@@ -313,7 +313,7 @@ const Printing = () => {
                       </td>
                       <td>{previewNames(order)}</td>
                       <td>
-                        {order.shipping_address && (
+                        {order.shipping_address ? (
                           <Fragment>
                             <div>{order.shipping_address.name}</div>
                             <div>{order.shipping_address.phone}</div>
@@ -325,6 +325,8 @@ const Printing = () => {
                               {order.shipping_address.zip}
                             </div>
                           </Fragment>
+                        ) : (
+                          '-'
                         )}
                       </td>
                       <td>
