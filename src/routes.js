@@ -8,6 +8,7 @@ import { DefaultLayout } from './layouts';
 import BlogOverview from './views/BlogOverview';
 import Users from './views/Users';
 import Printing from './views/Printing';
+import PsdScripts from './views/PsdScripts';
 // import UserProfileLite from "./views/UserProfileLite";
 // import AddNewPost from "./views/AddNewPost";
 import Errors from './views/Errors';
@@ -36,6 +37,13 @@ export default [
     layout: DefaultLayout,
     component: Printing,
     adminRoles: [1, 2],
+  },
+  {
+    path: '/psd-scripts',
+    exact: true,
+    layout: DefaultLayout,
+    component: PsdScripts,
+    adminRoles: [1],
   },
   // {
   //   path: "/blog-overview",

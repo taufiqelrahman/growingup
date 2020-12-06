@@ -18,6 +18,12 @@ export default function () {
       to: '/printing',
       adminRoles: [1, 2],
     },
+    {
+      title: 'PSD Scripts',
+      htmlBefore: '<i class="material-icons">dynamic_feed</i>',
+      to: '/psd-scripts',
+      adminRoles: [1],
+    },
     // {
     //   title: 'Book Contents',
     //   htmlBefore: '<i class="material-icons">library_books</i>',
