@@ -6,6 +6,8 @@ const printingStates = [
   'Printing & shipping (Fariz)',
   'In progress (Fariz)',
   'Done (Input resi)',
+  'Retur in progress',
+  'Retur terkirim',
 ];
 
 export default printingStates;
