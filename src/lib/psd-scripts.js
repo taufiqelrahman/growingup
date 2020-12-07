@@ -1,10 +1,9 @@
-const generatePsdScript = ({ gender, age, hair, skin, language }) => `const child = {
+const generatePsdScript = ({ gender, age, hair, skin }) => `const child = {
   gender: '${gender}',
   age: '${age}',
   hair: '${hair}',
   skin: '${skin}',
-  language: '${language}'
-}
+};
 
 /**
  * Change avatar

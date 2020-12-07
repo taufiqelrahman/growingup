@@ -10,7 +10,6 @@ const PsdScripts = () => {
     age: '',
     hair: '',
     skin: '',
-    language: '',
   });
   const generate = (e) => {
     e.preventDefault();
@@ -97,7 +96,7 @@ const PsdScripts = () => {
                     ))}
                   </FormSelect>
                 </FormGroup>
-                <FormGroup>
+                {/* <FormGroup>
                   <label htmlFor="languageSelect">Language</label>
                   <FormSelect
                     required
@@ -112,7 +111,7 @@ const PsdScripts = () => {
                       </option>
                     ))}
                   </FormSelect>
-                </FormGroup>
+                </FormGroup> */}
                 <Button type="submit" theme="success">
                   Generate
                 </Button>
