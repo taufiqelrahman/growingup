@@ -15,7 +15,7 @@ const PsdScripts = () => {
     e.preventDefault();
     var blob = new Blob([generatePsdScript(child)], { type: 'text/plain;charset=utf-8' });
     const { gender, age, hair, skin } = child;
-    FileSaver.saveAs(blob, `${gender}-${age}=${hair}-${skin}.js`);
+    FileSaver.saveAs(blob, `${gender}-${age}-${hair}-${skin}.js`);
   };
   const hairOptions = child.gender === 'boy' ? ['short', 'curly'] : ['short', 'hijab'];
   return (
