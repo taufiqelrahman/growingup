@@ -1,13 +1,40 @@
 const printingStates = [
-  'Preparation PDF (Dhana)',
-  'In progress (Dhana)',
-  'QC PDF (Riyan)',
-  'In progress (Riyan)',
-  'Printing & shipping (Fariz)',
-  'In progress (Fariz)',
-  'Done (Input resi)',
-  'Retur in progress',
-  'Retur terkirim',
+  {
+    key: 'PREP',
+    value: 'Preparation PDF (Dhana)',
+  },
+  {
+    key: 'ON_PREP',
+    value: 'In progress (Dhana)',
+  },
+  {
+    key: 'QC_PDF',
+    value: 'QC PDF (Riyan)',
+  },
+  {
+    key: 'ON_QC_PDF',
+    value: 'In progress (Riyan)',
+  },
+  {
+    key: 'PRINTING',
+    value: 'Printing & shipping (Fariz)',
+  },
+  {
+    key: 'ON_PRINTING',
+    value: 'In progress (Fariz)',
+  },
+  {
+    key: 'DONE',
+    value: 'Done (Input resi)',
+  },
+  {
+    key: 'RETURN',
+    value: 'Retur in progress',
+  },
+  {
+    key: 'RETURN_SENT',
+    value: 'Retur terkirim',
+  },
 ];
 
 export default printingStates;

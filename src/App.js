@@ -26,6 +26,7 @@ const App = () => {
           routes.map((route, index) => {
             const isNotHomeOrError = !['/', '/error'].includes(route.path);
             if (isNotHomeOrError && !route.adminRoles.includes(me.is_admin)) return null;
+            const useFooter = route.path !== '/printing';
             return (
               <Route
                 key={index}
@@ -33,7 +34,7 @@ const App = () => {
                 exact={route.exact}
                 component={withTracker((props) => {
                   return (
-                    <route.layout {...props}>
+                    <route.layout {...props} noFooter={!useFooter}>
                       <route.component {...props} />
                     </route.layout>
                   );

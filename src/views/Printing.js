@@ -1,11 +1,8 @@
-import React, { useEffect, useState, Fragment, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   Container,
   Row,
   Col,
-  Card,
-  CardHeader,
-  CardBody,
   Button,
   FormInput,
   FormGroup,
@@ -18,15 +15,14 @@ import { getOrders, updateOrder, fulfillOrder, updateFulfillment } from '../flux
 import store from '../flux/store';
 import printingStates from '../config/printing-states';
 import PageTitle from '../components/common/PageTitle';
+import PrintingBoard from '../components/printing/Board';
+import PrintingTable from '../components/printing/Table';
+import { displayEnum, sortEnum, pageSize } from '../helpers/printings';
 import '../assets/pagination.scss';
-
-const sortEnum = {
-  DAYS_LEFT: 'created_at',
-  STATUS: 'printing_state',
-};
-const pageSize = 10;
+import '../assets/board.scss';
 
 const Printing = () => {
+  const [display, setDisplay] = useState(displayEnum.BOARD);
   const [me, setMe] = useState(store.getMe());
   const [orders, setOrders] = useState(store.getOrders());
   const [uiState, setUiState] = useState({
@@ -35,16 +31,14 @@ const Printing = () => {
     modalData: [],
     receiptModal: false,
     orderId: '',
+    loading: true,
+    updating: '',
   });
   const [filterState, setFilterState] = useState({
     filteredStatus: '',
     filteredOrderNumber: '',
     sortByColumn: '',
     sortByDescending: true,
-  });
-  const [formData, setFormData] = useState({
-    status: '',
-    path: '',
   });
   const [fulfillmentData, setFulfillmentData] = useState({
     id: '',
@@ -81,36 +75,14 @@ const Printing = () => {
       });
     }
     // console.log(filteredOrders.map((ord) => ord.id));
+    // console.log(filteredOrders.map((ord) => ord.printings.created_at));
     setOrders(filteredOrders);
   }, [filterState]);
   function onChange() {
     setOrders(store.getOrders());
+    setUiState({ ...uiState, loading: false, updatin: false });
     setMe(store.getMe());
   }
-  const calculateDays = (paid_date) => {
-    const paidDate = new Date(paid_date);
-    const currentDate = new Date();
-    const diffTime = Math.abs(currentDate - paidDate);
-    const days = 7 - Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return days > 0 ? days : 0;
-  };
-
-  const previewNames = (order) => {
-    if (!order.line_items) return '-';
-    const names = order.line_items.map((item) => {
-      const { value: name } = item.properties.find((prop) => prop.name === 'Name');
-      return name;
-    });
-    return names.join(', ');
-  };
-
-  const onEdit = (order) => {
-    setUiState({ ...uiState, isEdit: order.id });
-    setFormData({
-      status: order.printings.printing_state,
-      path: order.printings.source_path,
-    });
-  };
   const viewBooks = (order) => {
     const books = order.line_items.map((item) => {
       let newItem = { id: item.id };
@@ -120,13 +92,6 @@ const Printing = () => {
       return { ...newItem };
     });
     setUiState({ ...uiState, modal: true, modalData: books });
-  };
-  const cancelEdit = () => {
-    setUiState({ ...uiState, isEdit: false });
-  };
-  const onSave = (order) => {
-    updateOrder(order.id, formData);
-    cancelEdit();
   };
   const toggleSort = (type) => {
     if (filterState.sortByColumn === type) {
@@ -163,13 +128,33 @@ const Printing = () => {
   };
 
   const [pageActive, setPageActive] = useState(0);
-  const paginatedOrders = useMemo(() => {
-    const pageStart = pageActive * pageSize;
-    return orders.slice(pageStart, pageStart + pageSize);
-  }, [orders, pageActive]);
   const paginationSize = useMemo(() => {
+    if (display === displayEnum.BOARD) return 0;
     return Math.ceil(orders.length / pageSize);
-  }, [orders]);
+  }, [orders, display]);
+
+  const onDragEnd = useCallback(
+    ({ destination, draggableId, source }) => {
+      if (display === displayEnum.TABLE) return;
+      if (!destination) return;
+      if (destination.droppableId == source.droppableId) return;
+      setUiState({ ...uiState, loading: false, updating: destination.droppableId });
+      const newState = printingStates.find((state) => state.key === destination.droppableId);
+      const newOrders = orders.map((order) => {
+        if (order.id == draggableId) order.printings.printing_state = newState.value;
+        return order;
+      });
+      // console.log(orders)
+      setOrders(newOrders);
+      updateOrder(draggableId, { status: newState.value });
+    },
+    [orders, display],
+  );
+
+  const sortBy = (isDescending) => {
+    const sortByDescending = isDescending === 'Descending';
+    setFilterState({ ...filterState, sortByColumn: sortEnum.DAYS_LEFT, sortByDescending });
+  };
 
   return (
     <Container fluid className="main-content-container px-4">
@@ -178,216 +163,100 @@ const Printing = () => {
         <PageTitle sm="4" title="Daftar Print" subtitle="Pesanan yang siap untuk diprint" className="text-sm-left" />
       </Row>
 
-      {/* Default Light Table */}
       <Row>
-        <Col>
-          <Card small className="mb-4">
-            <CardHeader className="border-bottom">
-              <h5>Filter</h5>
-              <Row>
-                <Col sm="3">
-                  <FormGroup>
-                    <FormInput
-                      id="filterOrderNumber"
-                      placeholder="Order Number"
-                      defaultValue={filterState.filteredOrderNumber}
-                      onChange={(e) => setFilterState({ ...filterState, filteredOrderNumber: e.target.value })}
-                      size="sm"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col sm="3">
-                  <FormGroup>
-                    <FormSelect
-                      id="filterStatus"
-                      defaultValue={filterState.filteredStatus}
-                      onChange={(e) => setFilterState({ ...filterState, filteredStatus: e.target.value })}
-                      size="sm"
-                    >
-                      <option value="">Select status</option>
-                      {printingStates.map((state) => (
-                        <option key={state} value={state}>
-                          {state}
-                        </option>
-                      ))}
-                    </FormSelect>
-                  </FormGroup>
-                </Col>
-              </Row>
-            </CardHeader>
-            <CardBody className="p-0 pb-3" style={{ overflowX: 'auto' }}>
-              <table className="table mb-0">
-                <thead className="bg-light">
-                  <tr>
-                    <th scope="col" className="border-0" width="15%">
-                      Nomor Order
-                    </th>
-                    <th
-                      scope="col"
-                      className="border-0"
-                      width="20%"
-                      onClick={() => toggleSort(sortEnum.STATUS)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      Status
-                      {filterState.sortByColumn === sortEnum.STATUS && (
-                        <i className="material-icons">
-                          {filterState.sortByDescending ? 'arrow_drop_down' : 'arrow_drop_up'}
-                        </i>
-                      )}
-                    </th>
-                    <th
-                      scope="col"
-                      className="border-0"
-                      width="9%"
-                      onClick={() => toggleSort(sortEnum.DAYS_LEFT)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      Sisa Hari
-                      {filterState.sortByColumn === sortEnum.DAYS_LEFT && (
-                        <i className="material-icons">
-                          {filterState.sortByDescending ? 'arrow_drop_down' : 'arrow_drop_up'}
-                        </i>
-                      )}
-                    </th>
-                    <th scope="col" className="border-0" width={uiState.isEdit ? '25%' : null}>
-                      Folder
-                    </th>
-                    <th scope="col" className="border-0">
-                      Nama
-                    </th>
-                    <th scope="col" className="border-0">
-                      Alamat
-                    </th>
-                    <th scope="col" className="border-0">
-                      Notes
-                    </th>
-                    <th scope="col" className="border-0" width="15%">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedOrders.map((order) => (
-                    <tr key={order.id}>
-                      <td>{order.order_number}</td>
-                      <td>
-                        {uiState.isEdit === order.id ? (
-                          <FormGroup>
-                            <FormSelect
-                              id="inputStatus"
-                              defaultValue={order.printings.printing_state}
-                              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                              size="sm"
-                            >
-                              {printingStates.map((state) => (
-                                <option key={state} value={state}>
-                                  {state}
-                                </option>
-                              ))}
-                            </FormSelect>
-                          </FormGroup>
-                        ) : (
-                          order.printings.printing_state
-                        )}
-                      </td>
-                      <td className="text-center">{calculateDays(order.printings.created_at)}</td>
-                      <td className="text-center">
-                        {uiState.isEdit === order.id ? (
-                          <FormGroup>
-                            <FormInput
-                              id="inputStatus"
-                              placeholder="Folder"
-                              defaultValue={order.printings.source_path}
-                              onChange={(e) => setFormData({ ...formData, path: e.target.value })}
-                              size="sm"
-                            />
-                          </FormGroup>
-                        ) : order.printings.source_path ? (
-                          <a href={order.printings.source_path} target="_blank" rel="noreferrer">
-                            <i className="material-icons">folder_open</i>
-                          </a>
-                        ) : (
-                          '-'
-                        )}
-                      </td>
-                      <td>{previewNames(order)}</td>
-                      <td>
-                        {order.shipping_address ? (
-                          <Fragment>
-                            <div>{order.shipping_address.name}</div>
-                            <div>{order.shipping_address.phone}</div>
-                            <div>{order.shipping_address.address1}</div>
-                            {order.shipping_address.address2 && <div>{order.shipping_address.address2}</div>}
-                            <div>
-                              {order.shipping_address.city}&nbsp;
-                              {order.shipping_address.province}&nbsp;
-                              {order.shipping_address.zip}
-                            </div>
-                          </Fragment>
-                        ) : (
-                          '-'
-                        )}
-                      </td>
-                      <td>
-                        <div dangerouslySetInnerHTML={{ __html: order.printings.note }} />
-                      </td>
-                      <td>
-                        {uiState.isEdit === order.id ? (
-                          <Fragment>
-                            <Button
-                              outline
-                              size="sm"
-                              theme="success"
-                              className="mb-2 mr-1"
-                              onClick={() => onSave(order)}
-                            >
-                              Simpan
-                            </Button>
-                            <Button outline size="sm" theme="secondary" className="mb-2 mr-1" onClick={cancelEdit}>
-                              Batal
-                            </Button>
-                          </Fragment>
-                        ) : (
-                          <Fragment>
-                            {me && me.is_admin === 1 && (
-                              <Fragment>
-                                <Button
-                                  outline
-                                  size="sm"
-                                  theme="warning"
-                                  className="mb-2 mr-1"
-                                  onClick={() => onEdit(order)}
-                                >
-                                  Ubah
-                                </Button>
-                                <Button
-                                  outline
-                                  size="sm"
-                                  theme="dark"
-                                  className="mb-2 mr-1"
-                                  onClick={() => viewFulfillment(order)}
-                                >
-                                  Resi
-                                </Button>
-                              </Fragment>
-                            )}
-                            {order.line_items && (
-                              <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
-                                Lihat Buku
-                              </Button>
-                            )}
-                          </Fragment>
-                        )}
-                      </td>
-                    </tr>
+        <Col sm="3">
+          <FormGroup>
+            <label htmlFor="layoutSelect" style={{ fontWeight: 500 }}>
+              Layout
+            </label>
+            <FormSelect id="layoutSelect" defaultValue={display} onChange={(e) => setDisplay(e.target.value)} size="sm">
+              {Object.keys(displayEnum).map((displayKey) => (
+                <option key={displayKey} value={displayEnum[displayKey]}>
+                  {displayEnum[displayKey]}
+                </option>
+              ))}
+            </FormSelect>
+          </FormGroup>
+        </Col>
+        <Col sm="3">
+          <FormGroup>
+            <label htmlFor="filterOrderNumber" style={{ fontWeight: 500 }}>
+              Search Order Number
+            </label>
+            <FormInput
+              id="filterOrderNumber"
+              placeholder="Order Number"
+              defaultValue={filterState.filteredOrderNumber}
+              onChange={(e) => setFilterState({ ...filterState, filteredOrderNumber: e.target.value })}
+              size="sm"
+            />
+          </FormGroup>
+        </Col>
+        <Col sm="3">
+          <FormGroup>
+            {display === displayEnum.TABLE ? (
+              <>
+                <label htmlFor="filterStatus" style={{ fontWeight: 500 }}>
+                  Filter State
+                </label>
+                <FormSelect
+                  id="filterStatus"
+                  defaultValue={filterState.filteredStatus}
+                  onChange={(e) => setFilterState({ ...filterState, filteredStatus: e.target.value })}
+                  size="sm"
+                >
+                  <option value="">Select status</option>
+                  {printingStates.map((state) => (
+                    <option key={state.key} value={state.value}>
+                      {state.value}
+                    </option>
                   ))}
-                </tbody>
-              </table>
-            </CardBody>
-          </Card>
+                </FormSelect>
+              </>
+            ) : (
+              <>
+                <label htmlFor="sortBy" style={{ fontWeight: 500 }}>
+                  Sort Days
+                </label>
+                <FormSelect id="sortBy" onChange={(e) => sortBy(e.target.value)} size="sm">
+                  <option value="">Select sort</option>
+                  {['Descending', 'Ascending'].map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </FormSelect>
+              </>
+            )}
+          </FormGroup>
         </Col>
       </Row>
+
+      {/* Default Light Table */}
+      {display === displayEnum.TABLE && (
+        <PrintingTable
+          toggleSort={toggleSort}
+          filterState={filterState}
+          pageActive={pageActive}
+          display={display}
+          uiState={uiState}
+          orders={orders}
+          me={me}
+          setUiState={setUiState}
+          viewFulfillment={viewFulfillment}
+          viewBooks={viewBooks}
+        />
+      )}
+      {display === displayEnum.BOARD && (
+        <PrintingBoard
+          onDragEnd={onDragEnd}
+          uiState={uiState}
+          orders={orders}
+          me={me}
+          viewFulfillment={viewFulfillment}
+          viewBooks={viewBooks}
+        />
+      )}
 
       {paginationSize > 1 && (
         <div className="c-pagination">
