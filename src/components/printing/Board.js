@@ -11,7 +11,11 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks, me }) =
     <div style={{ display: 'flex', overflowX: 'auto', paddingTop: 18, borderTop: '2px solid #d9dde1' }}>
       <DragDropContext onDragEnd={onDragEnd}>
         {uiState.loading
-          ? [1, 2, 3, 4].map((i) => <Skeleton key={i} height={500} width={272} />)
+          ? [1, 2, 3, 4].map((i) => (
+              <div key={i} style={{ marginRight: 16 }}>
+                <Skeleton height={500} width={272} />
+              </div>
+            ))
           : printingStates.map((state) => (
               <div key={state.key} className="board__droppable">
                 <Droppable droppableId={state.key}>
