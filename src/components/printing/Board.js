@@ -7,6 +7,28 @@ import { calculateDays, previewNames, renderAddress, renderSourcePath } from '..
 import printingStates from '../../config/printing-states';
 
 const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks, me }) => {
+  const copyAddress = (orderId) => {
+    const addressEl = document.getElementById(`shipping-address-${orderId}`);
+
+    // get address text
+    var codeToBeCopied = addressEl.innerText;
+
+    // copy it to empty textarea
+    var emptyArea = document.createElement('TEXTAREA');
+    emptyArea.style.position = 'absolute';
+    emptyArea.innerHTML = codeToBeCopied;
+
+    // append textarea to existing dom
+    addressEl.appendChild(emptyArea);
+
+    // copy the text
+    emptyArea.select();
+    emptyArea.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    // remove textarea
+    addressEl.removeChild(emptyArea);
+  };
   return (
     <div style={{ display: 'flex', overflowX: 'auto', paddingTop: 18, borderTop: '2px solid #d9dde1' }}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -85,6 +107,9 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks, me }) =
                                           Lihat Buku
                                         </Button>
                                       )}
+                                      <Button size="sm" className="mt-3 mr-1" onClick={() => copyAddress(order.id)}>
+                                        Copy
+                                      </Button>
                                     </div>
                                   )}
                                 </Draggable>

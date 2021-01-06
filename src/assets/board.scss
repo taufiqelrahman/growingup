@@ -20,14 +20,14 @@
       color: white;
     }
 
-    &__body{
+    &__body {
       min-height: 500px;
       padding: 8px;
       max-height: calc(100vh - 155px - 60px);
       overflow-y: auto;
     }
   }
-  
+
   &__draggable {
     padding: 8px;
     margin-bottom: 8px;
@@ -62,7 +62,7 @@
       }
 
       &--alert {
-        background: #E31E52;
+        background: #e31e52;
         color: white;
       }
     }

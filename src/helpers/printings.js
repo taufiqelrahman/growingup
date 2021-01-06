@@ -39,8 +39,10 @@ export const previewNames = (order) => {
 
 export const renderAddress = (order) => {
   return order.shipping_address ? (
-    <>
-      <div>{order.shipping_address.name}</div>
+    <div id={`shipping-address-${order.id}`}>
+      <div style={{ textTransform: 'capitalize' }}>
+        {order.shipping_address.name} ({previewNames(order)})
+      </div>
       <div>{order.shipping_address.phone}</div>
       <div>{order.shipping_address.address1}</div>
       {order.shipping_address.address2 && <div>{order.shipping_address.address2}</div>}
@@ -49,7 +51,7 @@ export const renderAddress = (order) => {
         {order.shipping_address.province}&nbsp;
         {order.shipping_address.zip}
       </div>
-    </>
+    </div>
   ) : (
     '-'
   );
