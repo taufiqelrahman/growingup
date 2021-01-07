@@ -17,11 +17,11 @@ const printingStates = [
   },
   {
     key: 'PRINTING',
-    value: 'Printing & shipping (Fariz)',
+    value: 'Printing & shipping (Iwan)',
   },
   {
     key: 'ON_PRINTING',
-    value: 'In progress (Fariz)',
+    value: 'In progress (Iwan)',
   },
   {
     key: 'DONE',
