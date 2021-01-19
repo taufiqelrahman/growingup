@@ -208,7 +208,6 @@ Table.propTypes = {
   toggleSort: PropTypes.func,
   filterState: PropTypes.object,
   uiState: PropTypes.object,
-  setFormData: PropTypes.func,
   me: PropTypes.object,
   orders: PropTypes.array,
   pageActive: PropTypes.number,
