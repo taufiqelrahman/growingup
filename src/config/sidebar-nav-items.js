@@ -24,6 +24,12 @@ export default function () {
       to: '/psd-scripts',
       adminRoles: [1],
     },
+    {
+      title: 'Reports',
+      htmlBefore: '<i class="material-icons">show_chart</i>',
+      to: '/reports',
+      adminRoles: [1],
+    },
     // {
     //   title: 'Book Contents',
     //   htmlBefore: '<i class="material-icons">library_books</i>',

@@ -9,6 +9,7 @@ import BlogOverview from './views/BlogOverview';
 import Users from './views/Users';
 import Printing from './views/Printing';
 import PsdScripts from './views/PsdScripts';
+import Reports from './views/Reports';
 // import UserProfileLite from "./views/UserProfileLite";
 // import AddNewPost from "./views/AddNewPost";
 import Errors from './views/Errors';
@@ -43,6 +44,13 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: PsdScripts,
+    adminRoles: [1],
+  },
+  {
+    path: '/reports',
+    exact: true,
+    layout: DefaultLayout,
+    component: Reports,
     adminRoles: [1],
   },
   // {
