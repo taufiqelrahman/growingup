@@ -44,7 +44,7 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: PsdScripts,
-    adminRoles: [1],
+    adminRoles: [1, 2],
   },
   {
     path: '/reports',

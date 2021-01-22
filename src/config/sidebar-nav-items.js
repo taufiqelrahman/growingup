@@ -22,7 +22,7 @@ export default function () {
       title: 'PSD Scripts',
       htmlBefore: '<i class="material-icons">dynamic_feed</i>',
       to: '/psd-scripts',
-      adminRoles: [1],
+      adminRoles: [1, 2],
     },
     {
       title: 'Reports',

@@ -1,4 +1,4 @@
-export default class Products {
+export default class Orders {
   constructor(adapter) {
     this.adapter = adapter;
   }
