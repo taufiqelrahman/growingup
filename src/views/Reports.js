@@ -63,7 +63,12 @@ const Reports = () => {
         <Col sm="3">
           <Button theme="success" disabled={orders.length === 0}>
             {orders.length ? (
-              <CSVLink data={filteredOrders()} headers={headers} filename="test" style={{ color: 'white' }}>
+              <CSVLink
+                data={filteredOrders()}
+                headers={headers}
+                filename={`Orders_Reports_${new Date().getTime()}`}
+                style={{ color: 'white' }}
+              >
                 Orders
               </CSVLink>
             ) : (
