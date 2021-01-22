@@ -2,22 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'shards-react';
 
 import { CSVLink } from 'react-csv';
-import { getOrders } from '../flux/actions';
+import { getOrders, getChildren } from '../flux/actions';
 import store from '../flux/store';
 import PageTitle from '../components/common/PageTitle';
-// import OrderReport from '../components/reports/orders';
 
 const Reports = () => {
   const [orders, setOrders] = useState(store.getOrders());
+  const [children, setChildren] = useState(store.getChildren());
   useEffect(() => {
     store.addChangeListener(onChange);
     if (store.getOrders().length === 0) getOrders();
+    if (store.getChildren().length === 0) getChildren();
     return () => store.removeChangeListener(onChange);
   }, []);
   function onChange() {
     setOrders(store.getOrders());
+    setChildren(store.getChildren());
   }
-  const headers = [
+  const ordersHeaders = [
     { label: 'Created At', key: 'created_at' },
     { label: 'Order Number', key: 'order_number' },
     { label: 'Payment Gateway', key: 'gateway' },
@@ -53,6 +55,32 @@ const Reports = () => {
       }),
     );
   };
+  const childrenHeaders = [
+    { label: 'Created At', key: 'created_at' },
+    { label: 'Name', key: 'name' },
+    { label: 'Cover', key: 'cover' },
+    { label: 'Gender', key: 'gender' },
+    { label: 'Age', key: 'age' },
+    { label: 'Skin', key: 'skin' },
+    { label: 'Hair', key: 'hair' },
+    { label: 'Dedication', key: 'message' },
+    { label: 'Book Language', key: 'language' },
+    { label: 'Occupations', key: 'occupations' },
+  ];
+  const filteredChildren = () => {
+    return children.map(({ name, cover, gender, age, skin, hair, message, language, occupations, created_at }) => ({
+      name,
+      cover,
+      gender,
+      age,
+      skin,
+      hair,
+      message,
+      language,
+      occupations,
+      created_at,
+    }));
+  };
   return (
     <Container fluid className="main-content-container px-4">
       {/* Page Header */}
@@ -60,12 +88,12 @@ const Reports = () => {
         <PageTitle sm="4" title="Download Reports" subtitle="Unduh report yang kau butuhkan" className="text-sm-left" />
       </Row>
       <Row>
-        <Col sm="3">
-          <Button theme="success" disabled={orders.length === 0}>
+        <Col>
+          <Button theme="success" disabled={orders.length === 0} className="mr-2">
             {orders.length ? (
               <CSVLink
                 data={filteredOrders()}
-                headers={headers}
+                headers={ordersHeaders}
                 filename={`Orders_Reports_${new Date().getTime()}`}
                 style={{ color: 'white' }}
               >
@@ -73,6 +101,20 @@ const Reports = () => {
               </CSVLink>
             ) : (
               'Orders'
+            )}
+          </Button>
+          <Button disabled={children.length === 0}>
+            {children.length ? (
+              <CSVLink
+                data={filteredChildren()}
+                headers={childrenHeaders}
+                filename={`Children_Reports_${new Date().getTime()}`}
+                style={{ color: 'white' }}
+              >
+                Children
+              </CSVLink>
+            ) : (
+              'Children'
             )}
           </Button>
         </Col>

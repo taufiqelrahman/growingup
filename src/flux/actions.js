@@ -41,6 +41,20 @@ export function updateUser(id, data) {
     });
 }
 
+export function getChildren() {
+  api()
+    .children.get()
+    .then(({ data }) => {
+      dispatcher.dispatch({
+        actionType: constants.GET_CHILDREN,
+        data: data.data.children,
+      });
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
 export function getOrders() {
   api()
     .orders.get()

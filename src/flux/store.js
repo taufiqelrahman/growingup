@@ -12,6 +12,7 @@ let _store = {
   users: [],
   me: null,
   orders: [],
+  children: [],
 };
 
 class Store extends EventEmitter {
@@ -34,6 +35,10 @@ class Store extends EventEmitter {
 
   getOrders() {
     return _store.orders;
+  }
+
+  getChildren() {
+    return _store.children;
   }
 
   // base
@@ -63,6 +68,9 @@ dispatcher.register((action) => {
       break;
     case CONSTANTS.GET_ORDERS:
       _store.orders = action.data;
+      break;
+    case CONSTANTS.GET_CHILDREN:
+      _store.children = action.data;
       break;
     default:
   }

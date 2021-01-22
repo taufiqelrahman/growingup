@@ -3,4 +3,5 @@ export default {
   GET_USERS: 'GET_USERS',
   GET_ME: 'GET_ME',
   GET_ORDERS: 'GET_ORDERS',
+  GET_CHILDREN: 'GET_CHILDREN',
 };
