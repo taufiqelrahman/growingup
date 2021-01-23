@@ -93,11 +93,13 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                         className="board__draggable"
                                       >
                                         <div className="board__draggable__title">
-                                          <span
-                                            className={`board__draggable__remaining board__draggable__remaining--${daysClassName}`}
-                                          >
-                                            {daysLeft} hari
-                                          </span>
+                                          {!['DONE', 'RETURN_SENT'].includes(state.key) && (
+                                            <span
+                                              className={`board__draggable__remaining board__draggable__remaining--${daysClassName}`}
+                                            >
+                                              {daysLeft} hari
+                                            </span>
+                                          )}
                                           {order.order_number} - {previewNames(order)}
                                         </div>
                                         <div style={{ marginBottom: 6 }}>
