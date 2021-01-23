@@ -7,7 +7,7 @@ import { calculateDays, previewNames, renderAddress, renderSourcePath } from '..
 import printingStates from '../../config/printing-states';
 import { updateOrder } from '../../flux/actions';
 
-const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks, me }) => {
+const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
   const [sourceModal, setSourceModal] = useState({
     isOpened: false,
     sourcePath: '',
@@ -106,26 +106,22 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks, me }) =
                                         </div>
                                         <div style={{ fontWeight: 500 }}>Alamat:</div>
                                         <div>{renderAddress(order)}</div>
-                                        {me && me.is_admin === 1 && (
-                                          <>
-                                            <Button
-                                              size="sm"
-                                              theme="success"
-                                              className="mt-3 mr-1"
-                                              onClick={() => viewFulfillment(order)}
-                                            >
-                                              Resi
-                                            </Button>
-                                            <Button
-                                              size="sm"
-                                              theme="warning"
-                                              className="mt-3 mr-1"
-                                              onClick={() => onClickFolder(order)}
-                                            >
-                                              Folder
-                                            </Button>
-                                          </>
-                                        )}
+                                        <Button
+                                          size="sm"
+                                          theme="success"
+                                          className="mt-3 mr-1"
+                                          onClick={() => viewFulfillment(order)}
+                                        >
+                                          Resi
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          theme="warning"
+                                          className="mt-3 mr-1"
+                                          onClick={() => onClickFolder(order)}
+                                        >
+                                          Folder
+                                        </Button>
                                         {order.line_items && (
                                           <Button
                                             size="sm"
@@ -187,7 +183,6 @@ Board.propTypes = {
   orders: PropTypes.array,
   viewFulfillment: PropTypes.func,
   viewBooks: PropTypes.func,
-  me: PropTypes.object,
 };
 
 export default Board;

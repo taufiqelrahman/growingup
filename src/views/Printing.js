@@ -23,7 +23,7 @@ import '../assets/board.scss';
 
 const Printing = () => {
   const [display, setDisplay] = useState(displayEnum.BOARD);
-  const [me, setMe] = useState(store.getMe());
+  // const [me, setMe] = useState(store.getMe());
   const [orders, setOrders] = useState(store.getOrders());
   const [uiState, setUiState] = useState({
     isEdit: false,
@@ -81,7 +81,7 @@ const Printing = () => {
   function onChange() {
     setOrders(store.getOrders());
     setUiState({ ...uiState, loading: false, updatin: false });
-    setMe(store.getMe());
+    // setMe(store.getMe());
   }
   const viewBooks = (order) => {
     const books = order.line_items.map((item) => {
@@ -241,7 +241,6 @@ const Printing = () => {
           display={display}
           uiState={uiState}
           orders={orders}
-          me={me}
           setUiState={setUiState}
           viewFulfillment={viewFulfillment}
           viewBooks={viewBooks}
@@ -252,7 +251,6 @@ const Printing = () => {
           onDragEnd={onDragEnd}
           uiState={uiState}
           orders={orders}
-          me={me}
           viewFulfillment={viewFulfillment}
           viewBooks={viewBooks}
         />

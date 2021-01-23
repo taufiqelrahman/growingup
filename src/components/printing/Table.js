@@ -17,7 +17,6 @@ const Table = ({
   toggleSort,
   filterState,
   uiState,
-  me,
   orders,
   pageActive,
   display,
@@ -164,28 +163,18 @@ const Table = ({
                         </>
                       ) : (
                         <>
-                          {me && me.is_admin === 1 && (
-                            <>
-                              <Button
-                                outline
-                                size="sm"
-                                theme="warning"
-                                className="mb-2 mr-1"
-                                onClick={() => onEdit(order)}
-                              >
-                                Ubah
-                              </Button>
-                              <Button
-                                outline
-                                size="sm"
-                                theme="dark"
-                                className="mb-2 mr-1"
-                                onClick={() => viewFulfillment(order)}
-                              >
-                                Resi
-                              </Button>
-                            </>
-                          )}
+                          <Button outline size="sm" theme="warning" className="mb-2 mr-1" onClick={() => onEdit(order)}>
+                            Ubah
+                          </Button>
+                          <Button
+                            outline
+                            size="sm"
+                            theme="dark"
+                            className="mb-2 mr-1"
+                            onClick={() => viewFulfillment(order)}
+                          >
+                            Resi
+                          </Button>
                           {order.line_items && (
                             <Button outline size="sm" className="mb-2 mr-1" onClick={() => viewBooks(order)}>
                               Lihat Buku
@@ -208,7 +197,6 @@ Table.propTypes = {
   toggleSort: PropTypes.func,
   filterState: PropTypes.object,
   uiState: PropTypes.object,
-  me: PropTypes.object,
   orders: PropTypes.array,
   pageActive: PropTypes.number,
   display: PropTypes.string,
