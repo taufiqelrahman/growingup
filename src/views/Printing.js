@@ -146,7 +146,7 @@ const Printing = () => {
       });
       // console.log(orders)
       setOrders(newOrders);
-      updateOrder(draggableId, { status: newState.value });
+      updateOrder(draggableId, { status: newState.key });
     },
     [orders, display],
   );

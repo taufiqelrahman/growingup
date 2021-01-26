@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Button, FormInput, FormGroup, Modal, ModalBody, ModalHeader } from 'shards-react';
+import { Button, FormInput, FormGroup, FormSelect, Modal, ModalBody, ModalHeader } from 'shards-react';
 import Skeleton from 'react-loading-skeleton';
 import { calculateDays, previewNames, renderAddress, renderSourcePath } from '../../helpers/printings';
 import printingStates from '../../config/printing-states';
+import printingTeam from '../../config/printing-team';
 import { updateOrder } from '../../flux/actions';
 
 const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
@@ -12,6 +13,10 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
     isOpened: false,
     sourcePath: '',
     orderId: null,
+  });
+  const [logModal, setLogModal] = useState({
+    isOpened: false,
+    content: '',
   });
   const onSaveSource = () => {
     updateOrder(sourceModal.orderId, { path: sourceModal.sourcePath });
@@ -47,6 +52,8 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
     // remove textarea
     addressEl.removeChild(emptyArea);
   };
+  const setAssignee = (id, name) => updateOrder(id, { assignee: name });
+  const onViewLog = (order) => setLogModal({ isOpened: true, content: order.printings.note });
   return (
     <>
       <div style={{ display: 'flex', overflowX: 'auto', paddingTop: 18, borderTop: '2px solid #d9dde1' }}>
@@ -74,7 +81,7 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                           <>
                             {provided.placeholder}
                             {orders
-                              .filter((order) => order.printings.printing_state === state.value)
+                              .filter((order) => order.printings.printing_state === state.key)
                               .map((order, index) => {
                                 const daysLeft = calculateDays(order.printings.created_at);
                                 const daysClassName = daysLeft < 5 ? (daysLeft < 3 ? 'alert' : 'warning') : 'safe';
@@ -106,6 +113,25 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                           <span style={{ fontWeight: 500 }}>Folder: &nbsp;</span>
                                           {renderSourcePath(order)}
                                         </div>
+                                        <div style={{ marginBottom: 6 }}>
+                                          <label htmlFor="assignee" style={{ fontWeight: 500 }}>
+                                            Assignee
+                                          </label>
+                                          <FormSelect
+                                            id="assignee"
+                                            defaultValue={order.printings.assignee}
+                                            onChange={(e) => setAssignee(order.id, e.target.value)}
+                                            size="sm"
+                                            style={{ width: 'auto', marginLeft: 6 }}
+                                          >
+                                            <option value="unassigned">Belum ada</option>
+                                            {printingTeam.map((member) => (
+                                              <option key={member} value={member}>
+                                                {member}
+                                              </option>
+                                            ))}
+                                          </FormSelect>
+                                        </div>
                                         <div style={{ fontWeight: 500 }}>Alamat:</div>
                                         <div>{renderAddress(order)}</div>
                                         <Button
@@ -136,6 +162,14 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                         )}
                                         <Button size="sm" className="mt-3 mr-1" onClick={() => copyAddress(order.id)}>
                                           Copy
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          theme="light"
+                                          className="mt-3 mr-1"
+                                          onClick={() => onViewLog(order)}
+                                        >
+                                          Log
                                         </Button>
                                       </div>
                                     )}
@@ -174,6 +208,12 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
               Simpan
             </Button>
           </form>
+        </ModalBody>
+      </Modal>
+      <Modal open={logModal.isOpened} toggle={() => setLogModal({ ...logModal, isOpened: !logModal.isOpened })}>
+        <ModalHeader>Log</ModalHeader>
+        <ModalBody>
+          <div dangerouslySetInnerHTML={{ __html: logModal.content }} />
         </ModalBody>
       </Modal>
     </>

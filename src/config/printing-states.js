@@ -1,27 +1,31 @@
 const printingStates = [
   {
     key: 'PREP',
-    value: 'Preparation PDF (Dhana)',
+    value: 'Preparation PDF',
   },
   {
     key: 'ON_PREP',
-    value: 'In progress (Dhana)',
+    value: 'In progress',
   },
   {
     key: 'QC_PDF',
-    value: 'QC PDF (Riyan)',
+    value: 'QC PDF',
   },
   {
     key: 'ON_QC_PDF',
-    value: 'In progress (Riyan)',
+    value: 'In progress',
+  },
+  {
+    key: 'PDF_READY',
+    value: 'PDF ready',
+  },
+  {
+    key: 'LAYOUTING',
+    value: 'Layouting',
   },
   {
     key: 'PRINTING',
-    value: 'Printing & shipping (Iwan)',
-  },
-  {
-    key: 'ON_PRINTING',
-    value: 'In progress (Iwan)',
+    value: 'Printing & shipping',
   },
   {
     key: 'DONE',
