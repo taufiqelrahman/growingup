@@ -63,19 +63,17 @@ const Reports = () => {
     { label: 'Age', key: 'age' },
     { label: 'Skin', key: 'skin' },
     { label: 'Hair', key: 'hair' },
-    { label: 'Dedication', key: 'message' },
     { label: 'Book Language', key: 'language' },
     { label: 'Occupations', key: 'occupations' },
   ];
   const filteredChildren = () => {
-    return children.map(({ name, cover, gender, age, skin, hair, message, language, occupations, created_at }) => ({
+    return children.map(({ name, cover, gender, age, skin, hair, language, occupations, created_at }) => ({
       name,
       cover,
       gender,
       age,
       skin,
       hair,
-      message,
       language,
       occupations,
       created_at,
@@ -96,7 +94,6 @@ const Reports = () => {
                 headers={ordersHeaders}
                 filename={`Orders_Reports_${new Date().getTime()}`}
                 style={{ color: 'white' }}
-                separator={';'}
               >
                 Orders
               </CSVLink>
@@ -111,7 +108,6 @@ const Reports = () => {
                 headers={childrenHeaders}
                 filename={`Children_Reports_${new Date().getTime()}`}
                 style={{ color: 'white' }}
-                separator={';'}
               >
                 Children
               </CSVLink>
