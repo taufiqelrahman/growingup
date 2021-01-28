@@ -96,6 +96,7 @@ const Reports = () => {
                 headers={ordersHeaders}
                 filename={`Orders_Reports_${new Date().getTime()}`}
                 style={{ color: 'white' }}
+                separator={';'}
               >
                 Orders
               </CSVLink>
@@ -110,6 +111,7 @@ const Reports = () => {
                 headers={childrenHeaders}
                 filename={`Children_Reports_${new Date().getTime()}`}
                 style={{ color: 'white' }}
+                separator={';'}
               >
                 Children
               </CSVLink>
