@@ -11,7 +11,7 @@ import {
   ModalHeader,
   FormSelect,
 } from 'shards-react';
-import { getOrders, updateOrder, fulfillOrder, updateFulfillment } from '../flux/actions';
+import { getPrintingOrders, updateOrder, fulfillOrder, updateFulfillment } from '../flux/actions';
 import store from '../flux/store';
 import printingStates from '../config/printing-states';
 import PageTitle from '../components/common/PageTitle';
@@ -48,7 +48,7 @@ const Printing = () => {
   });
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0) getOrders();
+    if (store.getOrders().length === 0) getPrintingOrders();
     return () => store.removeChangeListener(onChange);
   }, []);
   useEffect(() => {

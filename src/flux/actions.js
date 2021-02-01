@@ -55,7 +55,7 @@ export function getChildren() {
     });
 }
 
-export function getOrders() {
+export function getPrintingOrders() {
   api()
     .orders.get()
     .then(({ data }) => {
@@ -73,6 +73,20 @@ export function getOrders() {
       dispatcher.dispatch({
         actionType: constants.GET_ORDERS,
         data: Object.values(result).filter((order) => !!order.printings),
+      });
+    })
+    .catch(() => {
+      // console.log(err);
+    });
+}
+
+export function getOrders() {
+  api()
+    .orders.get()
+    .then(({ data }) => {
+      dispatcher.dispatch({
+        actionType: constants.GET_ORDERS,
+        data: data.data.orders,
       });
     })
     .catch(() => {
