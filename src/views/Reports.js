@@ -21,7 +21,7 @@ const Reports = () => {
   }
   const ordersHeaders = [
     { label: 'Created At', key: 'created_at' },
-    { label: 'Order Number', key: 'order_number' },
+    { label: 'Order Number', key: 'name' },
     { label: 'Payment Gateway', key: 'gateway' },
     { label: 'Financial Status', key: 'financial_status' },
     { label: 'Total Discounts', key: 'total_discounts' },
@@ -48,7 +48,7 @@ const Reports = () => {
         financial_status,
         total_discounts,
         total_line_items_price,
-        order_number,
+        name: order_number,
         fulfillment_status,
         total_price,
         total_line_items: line_items.length,
