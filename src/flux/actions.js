@@ -71,7 +71,7 @@ export function getPrintingOrders() {
         };
       });
       dispatcher.dispatch({
-        actionType: constants.GET_ORDERS,
+        actionType: constants.GET_PRINTING_ORDERS,
         data: Object.values(result).filter((order) => !!order.printings),
       });
     })
@@ -98,7 +98,7 @@ export function updateOrder(id, data) {
   api()
     .orders.update(id, data)
     .then(() => {
-      getOrders();
+      getPrintingOrders();
     })
     .catch(() => {
       // console.log(err);
@@ -109,7 +109,7 @@ export function fulfillOrder(id, data) {
   api()
     .orders.fulfill(id, data)
     .then(() => {
-      getOrders();
+      getPrintingOrders();
     })
     .catch(() => {
       // console.log(err);
@@ -120,7 +120,7 @@ export function updateFulfillment(id, fulfillmentId, data) {
   api()
     .orders.updateFulfillment(id, fulfillmentId, data)
     .then(() => {
-      getOrders();
+      getPrintingOrders();
     })
     .catch(() => {
       // console.log(err);

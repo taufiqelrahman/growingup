@@ -12,6 +12,7 @@ let _store = {
   users: [],
   me: null,
   orders: [],
+  printingOrders: [],
   children: [],
 };
 
@@ -35,6 +36,10 @@ class Store extends EventEmitter {
 
   getOrders() {
     return _store.orders;
+  }
+
+  getPrintingOrders() {
+    return _store.printingOrders;
   }
 
   getChildren() {
@@ -68,6 +73,9 @@ dispatcher.register((action) => {
       break;
     case CONSTANTS.GET_ORDERS:
       _store.orders = action.data;
+      break;
+    case CONSTANTS.GET_PRINTING_ORDERS:
+      _store.printingOrders = action.data;
       break;
     case CONSTANTS.GET_CHILDREN:
       _store.children = action.data;

@@ -24,7 +24,7 @@ import '../assets/board.scss';
 const Printing = () => {
   const [display, setDisplay] = useState(displayEnum.BOARD);
   // const [me, setMe] = useState(store.getMe());
-  const [orders, setOrders] = useState(store.getOrders());
+  const [orders, setOrders] = useState(store.getPrintingOrders());
   const [uiState, setUiState] = useState({
     isEdit: false,
     modal: false,
@@ -48,12 +48,12 @@ const Printing = () => {
   });
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0) getPrintingOrders();
+    if (store.getPrintingOrders().length === 0) getPrintingOrders();
     return () => store.removeChangeListener(onChange);
   }, []);
   useEffect(() => {
     const { filteredStatus, filteredOrderNumber, sortByColumn, sortByDescending } = filterState;
-    let filteredOrders = [...store.getOrders()];
+    let filteredOrders = [...store.getPrintingOrders()];
     if (filteredStatus || filteredOrderNumber) {
       filteredOrders = filteredOrders.filter((order) => {
         let eligible = false;
@@ -79,7 +79,7 @@ const Printing = () => {
     setOrders(filteredOrders);
   }, [filterState]);
   function onChange() {
-    setOrders(store.getOrders());
+    setOrders(store.getPrintingOrders());
     setUiState({ ...uiState, loading: false, updatin: false });
     // setMe(store.getMe());
   }
