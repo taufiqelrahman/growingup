@@ -117,7 +117,7 @@ const Table = ({
                             size="sm"
                           >
                             {printingStates.map((state) => (
-                              <option key={state.key} value={state.value}>
+                              <option key={state.key} value={state.key}>
                                 {state.value}
                               </option>
                             ))}
