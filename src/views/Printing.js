@@ -282,12 +282,6 @@ const Printing = () => {
               <thead className="bg-light">
                 <tr>
                   <th scope="col" className="border-0">
-                    Nama
-                  </th>
-                  <th scope="col" className="border-0">
-                    Jenis Kelamin
-                  </th>
-                  <th scope="col" className="border-0">
                     Umur
                   </th>
                   <th scope="col" className="border-0">
@@ -297,13 +291,19 @@ const Printing = () => {
                     Kulit
                   </th>
                   <th scope="col" className="border-0">
-                    Profesi
-                  </th>
-                  <th scope="col" className="border-0">
                     Bahasa
                   </th>
                   <th scope="col" className="border-0">
+                    Profesi
+                  </th>
+                  <th scope="col" className="border-0">
                     Cover
+                  </th>
+                  <th scope="col" className="border-0">
+                    Nama
+                  </th>
+                  <th scope="col" className="border-0">
+                    Jenis Kelamin
                   </th>
                   <th scope="col" className="border-0">
                     Dedication
@@ -313,14 +313,14 @@ const Printing = () => {
               <tbody>
                 {uiState.modalData.map((data) => (
                   <tr key={data.id}>
-                    <td>{data.Name}</td>
-                    <td>{data.Gender}</td>
-                    <td>{data.Age}</td>
-                    <td>{data.Hair}</td>
-                    <td>{data.Skin}</td>
-                    <td>{data.Occupations}</td>
-                    <td>{data.Language}</td>
-                    <td>{data.Cover}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Age}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Hair}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Skin}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Language}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Occupations}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Cover}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Name}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Gender}</td>
                     <td>{data.Dedication}</td>
                   </tr>
                 ))}
