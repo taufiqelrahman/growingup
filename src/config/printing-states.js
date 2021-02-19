@@ -24,12 +24,20 @@ const printingStates = [
     value: 'Layouting',
   },
   {
+    key: 'PRINTING_VENDOR',
+    value: 'Vendor printing',
+  },
+  {
     key: 'PRINTING',
-    value: 'Printing & shipping',
+    value: 'Printing at office',
+  },
+  {
+    key: 'SHIPPING',
+    value: 'Shipping',
   },
   {
     key: 'DONE',
-    value: 'Done (Input resi)',
+    value: 'Input resi',
   },
   {
     key: 'RETURN',
