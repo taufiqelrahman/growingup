@@ -29,23 +29,8 @@ const filterOrders = (orders, timeFilter) => {
     return dateToCompare === dateComparer;
   });
 };
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
-};
 const chartMock = {
-  chartLabels: [null, null, null, null, null, null, null, null, null, null],
-  data: [
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-  ],
+  chartLabels: [null, null, null, null, null, null, null],
 };
 
 export const booksSold = (orders, timeFilter) => {
@@ -63,7 +48,7 @@ export const booksSold = (orders, timeFilter) => {
         borderWidth: 1.5,
         backgroundColor: 'rgba(0, 184, 216, 0.1)',
         borderColor: 'rgb(0, 184, 216)',
-        data: chartMock.data,
+        data: [1, 2, 1, 3, 5, 4, 7],
       },
     ],
   };
@@ -83,7 +68,7 @@ export const ordersProcessed = (orders, timeFilter) => {
         borderWidth: 1.5,
         backgroundColor: 'rgba(23,198,113,0.1)',
         borderColor: 'rgb(23,198,113)',
-        data: chartMock.data,
+        data: [1, 2, 3, 3, 3, 4, 4],
       },
     ],
   };
@@ -104,7 +89,7 @@ export const uniqueCustomers = (orders, timeFilter) => {
         borderWidth: 1.5,
         backgroundColor: 'rgba(255,180,0,0.1)',
         borderColor: 'rgb(255,180,0)',
-        data: chartMock.data,
+        data: [2, 3, 3, 3, 4, 3, 3],
       },
     ],
   };
@@ -125,7 +110,7 @@ export const returnedBooks = (orders, timeFilter) => {
         borderWidth: 1.5,
         backgroundColor: 'rgba(255,65,105,0.1)',
         borderColor: 'rgb(255,65,105)',
-        data: chartMock.data,
+        data: [3, 2, 3, 2, 4, 5, 4],
       },
     ],
   };
