@@ -5,7 +5,8 @@
 import { DefaultLayout } from './layouts';
 
 // Route Views
-import BlogOverview from './views/BlogOverview';
+// import BlogOverview from './views/BlogOverview';
+import Overview from './views/Overview';
 import Users from './views/Users';
 import Printing from './views/Printing';
 import PsdScripts from './views/PsdScripts';
@@ -22,7 +23,7 @@ export default [
     path: '/',
     exact: true,
     layout: DefaultLayout,
-    component: BlogOverview,
+    component: Overview,
     adminRoles: [],
   },
   {

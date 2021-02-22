@@ -1,11 +1,12 @@
 export default function () {
   return [
-    // {
-    //   title: 'Blog Dashboard',
-    //   to: '/blog-overview',
-    //   htmlBefore: '<i class="material-icons">edit</i>',
-    //   htmlAfter: '',
-    // },
+    {
+      title: 'Dashboard',
+      to: '/',
+      htmlBefore: '<i class="material-icons">edit</i>',
+      // htmlAfter: '',
+      adminRoles: [1, 2],
+    },
     {
       title: 'Users',
       htmlBefore: '<i class="material-icons">people</i>',
