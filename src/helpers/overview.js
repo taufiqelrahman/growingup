@@ -18,6 +18,8 @@ const dateConverter = (date, timeFilter, reductor = 0) => {
       return parseInt(month, 10) - reductor + year;
     case timeUnitEnum.YEARLY:
       return parseInt(year, 10) - reductor;
+    default:
+      return '';
   }
 };
 
