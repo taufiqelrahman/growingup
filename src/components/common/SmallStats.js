@@ -111,11 +111,9 @@ class SmallStats extends React.Component {
               <span className={labelClasses}>{label}</span>
               <h6 className={valueClasses}>{value}</h6>
             </div>
-            {percentage ? (
-              <div className={innerDataFieldClasses}>
-                <span className={percentageClasses}>{percentage}</span>
-              </div>
-            ) : null}
+            <div className={innerDataFieldClasses}>
+              <span className={percentageClasses}>{percentage}</span>
+            </div>
           </div>
           <canvas height={canvasHeight} ref={this.canvasRef} className={`stats-small-${shortid()}`} />
         </CardBody>

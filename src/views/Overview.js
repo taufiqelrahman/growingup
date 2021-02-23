@@ -1,9 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import { Container, Row, Col, FormGroup, FormSelect } from 'shards-react';
+import styled from 'styled-components';
 
 import PageTitle from '../components/common/PageTitle';
-import SmallStats from '../components/common/SmallStats';
+// import SmallStats from '../components/common/SmallStats';
 // import UsersOverview from '../components/blog/UsersOverview';
 // import UsersByDevice from '../components/blog/UsersByDevice';
 // import NewDraft from '../components/blog/NewDraft';
@@ -20,6 +21,35 @@ import {
   timeSpaceEnum,
   returnedBooks,
 } from '../helpers/overview';
+
+const StatsWrapperEl = styled.div`
+  min-height: 8.7rem;
+  box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12), 0 10px 10px rgba(90, 97, 105, 0.06),
+    0 7px 70px rgba(90, 97, 105, 0.1);
+  background-color: ${({ background }) => background || '#fff'};
+  border-radius: 0.625rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StatsContentEl = styled.div`
+  margin: auto;
+`;
+const StatsTitleEl = styled.span`
+  font-size: 0.75rem;
+  letter-spacing: 0.0625rem;
+  color: #818ea3;
+  text-transform: uppercase;
+`;
+const StatsNumberEl = styled.h6`
+  font-size: 2.0625rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  line-height: 1.5rem;
+  color: #3d5170;
+  font-weight: 500;
+  text-align: center;
+`;
 
 const Overview = () => {
   const [timeFilter, setTimeFilter] = useState({
@@ -93,17 +123,12 @@ const Overview = () => {
         <Row>
           {stats.map((stats, idx) => (
             <Col className="mb-4" key={idx} {...stats.attrs}>
-              <SmallStats
-                id={`small-stats-${idx}`}
-                variation="1"
-                chartData={stats.datasets}
-                chartLabels={stats.chartLabels}
-                label={stats.label}
-                value={stats.value}
-                percentage={stats.percentage}
-                increase={stats.increase}
-                decrease={stats.decrease}
-              />
+              <StatsWrapperEl background={stats.backgroundColor}>
+                <StatsContentEl>
+                  <StatsTitleEl>{stats.label}</StatsTitleEl>
+                  <StatsNumberEl>{stats.value}</StatsNumberEl>
+                </StatsContentEl>
+              </StatsWrapperEl>
             </Col>
           ))}
         </Row>

@@ -29,24 +29,24 @@ const filterOrders = (orders, timeFilter) => {
     return dateToCompare === dateComparer;
   });
 };
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
-};
-const chartMock = {
-  chartLabels: [null, null, null, null, null, null, null, null, null, null],
-  data: [
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-    getRandomInt(20),
-  ],
-};
+// const getRandomInt = (max) => {
+//   return Math.floor(Math.random() * max);
+// };
+// const chartMock = {
+//   chartLabels: [null, null, null, null, null, null, null, null, null, null],
+//   data: [
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//     getRandomInt(20),
+//   ],
+// };
 
 export const booksSold = (orders, timeFilter) => {
   const filteredOrders = filterOrders(orders, timeFilter);
@@ -54,18 +54,18 @@ export const booksSold = (orders, timeFilter) => {
   return {
     label: 'Books Sold',
     value: count,
-    chartLabels: chartMock.chartLabels,
+    backgroundColor: 'rgba(0, 184, 216, 0.1)',
     attrs: { md: '6', sm: '6' },
-    datasets: [
-      {
-        label: timeFilter.space,
-        fill: 'start',
-        borderWidth: 1.5,
-        backgroundColor: 'rgba(0, 184, 216, 0.1)',
-        borderColor: 'rgb(0, 184, 216)',
-        data: chartMock.data,
-      },
-    ],
+    // chartLabels: chartMock.chartLabels,
+    // datasets: [
+    //   {
+    //     label: timeFilter.space,
+    //     fill: 'start',
+    //     borderWidth: 1.5,
+    //     borderColor: 'rgb(0, 184, 216)',
+    //     data: chartMock.data,
+    //   },
+    // ],
   };
 };
 
@@ -74,18 +74,18 @@ export const ordersProcessed = (orders, timeFilter) => {
   return {
     label: 'Orders processed',
     value: filteredOrders.length,
-    chartLabels: chartMock.chartLabels,
+    backgroundColor: 'rgba(23,198,113,0.1)',
     attrs: { md: '6', sm: '6' },
-    datasets: [
-      {
-        label: timeFilter.space,
-        fill: 'start',
-        borderWidth: 1.5,
-        backgroundColor: 'rgba(23,198,113,0.1)',
-        borderColor: 'rgb(23,198,113)',
-        data: chartMock.data,
-      },
-    ],
+    // chartLabels: chartMock.chartLabels,
+    // datasets: [
+    //   {
+    //     label: timeFilter.space,
+    //     fill: 'start',
+    //     borderWidth: 1.5,
+    //     borderColor: 'rgb(23,198,113)',
+    //     data: chartMock.data,
+    //   },
+    // ],
   };
 };
 
@@ -95,18 +95,18 @@ export const uniqueCustomers = (orders, timeFilter) => {
   return {
     label: 'Unique customers',
     value: customers.size,
-    chartLabels: chartMock.chartLabels,
+    backgroundColor: 'rgba(255,180,0,0.1)',
     attrs: { md: '6', sm: '6' },
-    datasets: [
-      {
-        label: timeFilter.space,
-        fill: 'start',
-        borderWidth: 1.5,
-        backgroundColor: 'rgba(255,180,0,0.1)',
-        borderColor: 'rgb(255,180,0)',
-        data: chartMock.data,
-      },
-    ],
+    // chartLabels: chartMock.chartLabels,
+    // datasets: [
+    //   {
+    //     label: timeFilter.space,
+    //     fill: 'start',
+    //     borderWidth: 1.5,
+    //     borderColor: 'rgb(255,180,0)',
+    //     data: chartMock.data,
+    //   },
+    // ],
   };
 };
 
@@ -116,17 +116,17 @@ export const returnedBooks = (orders, timeFilter) => {
   return {
     label: 'Returned books',
     value: refundsCount,
-    chartLabels: chartMock.chartLabels,
+    backgroundColor: 'rgba(255,65,105,0.1)',
     attrs: { md: '6', sm: '6' },
-    datasets: [
-      {
-        label: timeFilter.space,
-        fill: 'start',
-        borderWidth: 1.5,
-        backgroundColor: 'rgba(255,65,105,0.1)',
-        borderColor: 'rgb(255,65,105)',
-        data: chartMock.data,
-      },
-    ],
+    // chartLabels: chartMock.chartLabels,
+    // datasets: [
+    //   {
+    //     label: timeFilter.space,
+    //     fill: 'start',
+    //     borderWidth: 1.5,
+    //     borderColor: 'rgb(255,65,105)',
+    //     data: chartMock.data,
+    //   },
+    // ],
   };
 };
