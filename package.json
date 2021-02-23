@@ -41,7 +41,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build:prod": "cross-env REACT_APP_GAID=UA-115105611-1 npm run build",
-    "build": "cross-env react-scripts --max_old_space_size=4096 build",
+    "build": "cross-env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "express": "nodemon -r esm --inspect server.js",
