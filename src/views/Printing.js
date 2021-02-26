@@ -138,10 +138,13 @@ const Printing = () => {
       if (display === displayEnum.TABLE) return;
       if (!destination) return;
       if (destination.droppableId == source.droppableId) return;
+      // eslint-disable-next-line
+      if (destination.droppableId == 'DONE' && !confirm('Are you sure to move this order to "done"?')) return;
+
       setUiState({ ...uiState, loading: false, updating: destination.droppableId });
       const newState = printingStates.find((state) => state.key === destination.droppableId);
       const newOrders = orders.map((order) => {
-        if (order.id == draggableId) order.printings.printing_state = newState.value;
+        if (order.id == draggableId) order.printings.printing_state = newState.key;
         return order;
       });
       // console.log(orders)
