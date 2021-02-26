@@ -84,9 +84,23 @@ export function getOrders() {
   api()
     .orders.get()
     .then(({ data }) => {
+      const { orders, order_printing: printings } = data.data;
+      let result = {};
+      orders.forEach((order) => {
+        result[`WIGU-${order.order_number}`] = { ...order };
+      });
+      printings.forEach((printing) => {
+        result[printing.order_number] = {
+          ...result[printing.order_number],
+          ...printing,
+        };
+      });
       dispatcher.dispatch({
         actionType: constants.GET_ORDERS,
-        data: data.data.orders,
+        data: {
+          orders: Object.values(result),
+          printings: data.data.order_printing,
+        },
       });
     })
     .catch(() => {

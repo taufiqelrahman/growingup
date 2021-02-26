@@ -4,12 +4,12 @@ import { Container, Row, Col, FormGroup, FormSelect } from 'shards-react';
 import styled from 'styled-components';
 
 import PageTitle from '../components/common/PageTitle';
+import OverSlaByStates from '../components/overview/OverSlaByStates';
+import OverSlaList from '../components/overview/OverSlaList';
 // import SmallStats from '../components/common/SmallStats';
 // import UsersOverview from '../components/blog/UsersOverview';
-// import UsersByDevice from '../components/blog/UsersByDevice';
 // import NewDraft from '../components/blog/NewDraft';
 // import Discussions from '../components/blog/Discussions';
-// import TopReferrals from '../components/common/TopReferrals';
 
 import { getOrders } from '../flux/actions';
 import store from '../flux/store';
@@ -20,6 +20,7 @@ import {
   timeUnitEnum,
   timeSpaceEnum,
   returnedBooks,
+  booksOverSla,
 } from '../helpers/overview';
 
 const StatsWrapperEl = styled.div`
@@ -58,21 +59,26 @@ const Overview = () => {
   });
 
   const [orders, setOrders] = useState(store.getOrders());
+  const [printings, setPrintings] = useState(store.getPrintings());
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0) getOrders();
+    if (store.getOrders().length === 0 || store.getPrintings().length === 0) getOrders();
     return () => store.removeChangeListener(onChange);
   }, []);
   function onChange() {
     setOrders(store.getOrders());
+    setPrintings(store.getPrintings());
   }
 
   const stats = useMemo(() => {
     const booksSoldResult = booksSold(orders, timeFilter);
     const ordersProcessedResult = ordersProcessed(orders, timeFilter);
     const uniqueCustomersResult = uniqueCustomers(orders, timeFilter);
-    const returnedBooksResult = returnedBooks(orders, timeFilter);
+    const returnedBooksResult = returnedBooks(printings, timeFilter);
     return [booksSoldResult, ordersProcessedResult, uniqueCustomersResult, returnedBooksResult];
+  }, [timeFilter, orders, printings]);
+  const overSlaBooks = useMemo(() => {
+    return booksOverSla(orders, timeFilter);
   }, [timeFilter, orders]);
   return (
     <Container fluid className="main-content-container px-4">
@@ -120,18 +126,28 @@ const Overview = () => {
       </Row>
 
       {orders.length ? (
-        <Row>
-          {stats.map((stats, idx) => (
-            <Col className="mb-4" key={idx} {...stats.attrs}>
-              <StatsWrapperEl background={stats.backgroundColor}>
-                <StatsContentEl>
-                  <StatsTitleEl>{stats.label}</StatsTitleEl>
-                  <StatsNumberEl>{stats.value}</StatsNumberEl>
-                </StatsContentEl>
-              </StatsWrapperEl>
+        <>
+          <Row>
+            {stats.map((stats, idx) => (
+              <Col className="mb-4" key={idx} {...stats.attrs}>
+                <StatsWrapperEl background={stats.backgroundColor}>
+                  <StatsContentEl>
+                    <StatsTitleEl>{stats.label}</StatsTitleEl>
+                    <StatsNumberEl>{stats.value}</StatsNumberEl>
+                  </StatsContentEl>
+                </StatsWrapperEl>
+              </Col>
+            ))}
+          </Row>
+          <Row>
+            <Col lg="6" md="6" sm="12" className="mb-4">
+              <OverSlaByStates books={overSlaBooks} />
             </Col>
-          ))}
-        </Row>
+            <Col lg="3" md="3" sm="12" className="mb-4">
+              <OverSlaList books={overSlaBooks} />
+            </Col>
+          </Row>
+        </>
       ) : (
         'loading...'
       )}
@@ -142,19 +158,11 @@ const Overview = () => {
         </Col>
 
         <Col lg="4" md="6" sm="12" className="mb-4">
-          <UsersByDevice />
-        </Col>
-
-        <Col lg="4" md="6" sm="12" className="mb-4">
           <NewDraft />
         </Col>
 
         <Col lg="5" md="12" sm="12" className="mb-4">
           <Discussions />
-        </Col>
-
-        <Col lg="3" md="12" sm="12" className="mb-4">
-          <TopReferrals />
         </Col>
       </Row> */}
     </Container>

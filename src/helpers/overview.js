@@ -1,3 +1,5 @@
+import { calculateDays } from './calculateDays';
+
 export const timeUnitEnum = {
   DAILY: 'Daily',
   MONTHLY: 'Monthly',
@@ -52,12 +54,12 @@ const filterOrders = (orders, timeFilter) => {
 
 export const booksSold = (orders, timeFilter) => {
   const filteredOrders = filterOrders(orders, timeFilter);
-  const count = filteredOrders.reduce((acc, curr) => acc + curr.line_items.length, 0);
+  const count = filteredOrders.reduce((acc, curr) => acc + (curr.line_items ? curr.line_items.length : 0), 0);
   return {
     label: 'Books Sold',
     value: count,
     backgroundColor: 'rgba(0, 184, 216, 0.1)',
-    attrs: { md: '6', sm: '6' },
+    attrs: { md: '3', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -77,7 +79,7 @@ export const ordersProcessed = (orders, timeFilter) => {
     label: 'Orders processed',
     value: filteredOrders.length,
     backgroundColor: 'rgba(23,198,113,0.1)',
-    attrs: { md: '6', sm: '6' },
+    attrs: { md: '3', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -98,7 +100,7 @@ export const uniqueCustomers = (orders, timeFilter) => {
     label: 'Unique customers',
     value: customers.size,
     backgroundColor: 'rgba(255,180,0,0.1)',
-    attrs: { md: '6', sm: '6' },
+    attrs: { md: '3', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -114,12 +116,13 @@ export const uniqueCustomers = (orders, timeFilter) => {
 
 export const returnedBooks = (orders, timeFilter) => {
   const filteredOrders = filterOrders(orders, timeFilter);
-  const refundsCount = filteredOrders.reduce((acc, order) => acc + order.refunds.length, 0);
+  const returnedBooks = filteredOrders.filter((order) => order.printings.printing_state === 'RETURN');
+  // const refundsCount = filteredOrders.reduce((acc, order) => acc + order.refunds.length, 0);
   return {
     label: 'Returned books',
-    value: refundsCount,
+    value: returnedBooks.length,
     backgroundColor: 'rgba(255,65,105,0.1)',
-    attrs: { md: '6', sm: '6' },
+    attrs: { md: '3', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -130,5 +133,54 @@ export const returnedBooks = (orders, timeFilter) => {
     //     data: chartMock.data,
     //   },
     // ],
+  };
+};
+
+const isOverSla = (createdAt, targetDate) => {
+  return calculateDays(createdAt, targetDate) - 7;
+};
+
+export const booksOverSla = (orders, timeFilter) => {
+  const slaByDays = {};
+  const filteredOrders = filterOrders(orders, timeFilter);
+
+  const oveSlaSentBooks = filteredOrders.filter((order) => {
+    if (order.fulfillments && order.fulfillments.length && !!order.printings) {
+      const [fulfillment] = order.fulfillments;
+      const days = isOverSla(order.printings.created_at, fulfillment.created_at);
+      if (slaByDays[days]) {
+        slaByDays[days] += 1;
+      } else {
+        slaByDays[days] = 1;
+      }
+      return days > 0;
+    }
+    return false;
+  });
+  const overSlaOngoingBooks = filteredOrders.filter((order) => {
+    if (!(order.fulfillments && order.fulfillments.length) && !!order.printings) {
+      const days = isOverSla(order.printings.created_at);
+      if (slaByDays[days]) {
+        slaByDays[days] += 1;
+      } else {
+        slaByDays[days] = 1;
+      }
+      return days > 0;
+    }
+    return false;
+  });
+
+  const sortedSlaByDays = Object.keys(slaByDays)
+    .map((day) => ({
+      day: parseInt(day, 10),
+      count: slaByDays[day],
+    }))
+    .sort((a, b) => b.day - a.day);
+
+  return {
+    sent: oveSlaSentBooks.length,
+    ongoing: overSlaOngoingBooks.length,
+    total: oveSlaSentBooks.length + overSlaOngoingBooks.length,
+    slaByDays: sortedSlaByDays,
   };
 };

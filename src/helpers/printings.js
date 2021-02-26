@@ -1,4 +1,5 @@
 import React from 'react';
+import { calculateDays as calculateDaysHelper } from './calculateDays';
 
 export const sortEnum = {
   DAYS_LEFT: 'created_at',
@@ -11,21 +12,7 @@ export const displayEnum = {
 export const pageSize = 10;
 
 export const calculateDays = (paid_date) => {
-  let paidDate = new Date(paid_date);
-  const currentDate = new Date();
-  let numWorkDays = 0;
-
-  while (paidDate <= currentDate) {
-    // Skips Sunday and Saturday
-    if (paidDate.getDay() !== 0 && paidDate.getDay() !== 6) {
-      numWorkDays++;
-    }
-    paidDate.setDate(paidDate.getDate() + 1);
-  }
-
-  // const diffTime = Math.abs(currentDate - paidDate);
-  // const days = 7 - Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return 7 - numWorkDays;
+  return 7 - calculateDaysHelper(paid_date);
 };
 
 export const previewNames = (order) => {

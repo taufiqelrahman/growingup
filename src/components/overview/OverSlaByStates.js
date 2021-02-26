@@ -1,0 +1,91 @@
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { Row, Col, Card, CardHeader, CardBody, CardFooter } from 'shards-react';
+
+import Chart from '../../utils/chart';
+
+const OverSlaByStates = (props) => {
+  const { title, books } = props;
+  const canvasRef = useRef();
+
+  useEffect(() => {
+    if (books.total === 0) return;
+    const chartData = {
+      datasets: [
+        {
+          hoverBorderColor: '#ffffff',
+          data: [books.sent, books.ongoing],
+          backgroundColor: ['rgba(0,123,255,0.9)', 'rgba(0,123,255,0.5)', 'rgba(0,123,255,0.3)'],
+        },
+      ],
+      labels: ['Sent', 'On Going'],
+    };
+    const chartConfig = {
+      type: 'pie',
+      data: chartData,
+      options: {
+        ...{
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 25,
+              boxWidth: 20,
+            },
+          },
+          cutoutPercentage: 0,
+          tooltips: {
+            custom: false,
+            mode: 'index',
+            position: 'nearest',
+          },
+        },
+        ...props.chartOptions,
+      },
+    };
+
+    new Chart(canvasRef.current, chartConfig);
+  }, [books]);
+
+  return (
+    <Card small className="h-100">
+      <CardHeader className="border-bottom">
+        <h6 className="m-0">{title}</h6>
+      </CardHeader>
+      <CardBody className="d-flex py-2">
+        {books.total > 0 ? (
+          <canvas height="220" ref={canvasRef} className="blog-users-by-device m-auto" />
+        ) : (
+          'Data not avalaible'
+        )}
+      </CardBody>
+      <CardFooter className="border-top">
+        <Row>
+          <Col>Total</Col>
+          <Col className="text-right view-report">{books.total}</Col>
+        </Row>
+      </CardFooter>
+    </Card>
+  );
+};
+
+OverSlaByStates.propTypes = {
+  /**
+   * The component's title.
+   */
+  title: PropTypes.string,
+  /**
+   * The chart config object.
+   */
+  chartConfig: PropTypes.object,
+  /**
+   * The Chart.js options.
+   */
+  chartOptions: PropTypes.object,
+  books: PropTypes.object,
+};
+
+OverSlaByStates.defaultProps = {
+  title: 'Over Sla By States',
+};
+
+export default OverSlaByStates;
