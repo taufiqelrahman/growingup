@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Card, CardHeader, CardBody, CardFooter } from 'shards-react';
 
@@ -6,10 +6,14 @@ import Chart from '../../utils/chart';
 
 const OverSlaByStates = (props) => {
   const { title, books } = props;
+  const [canvas, setCanvas] = useState(null);
   const canvasRef = useRef();
 
   useEffect(() => {
-    if (books.total === 0) return;
+    if (books.total === 0) {
+      if (canvas) setCanvas(canvas.destroy());
+      return;
+    }
     const chartData = {
       datasets: [
         {
@@ -43,7 +47,11 @@ const OverSlaByStates = (props) => {
       },
     };
 
-    new Chart(canvasRef.current, chartConfig);
+    if (canvas) {
+      setCanvas(canvas.update(chartConfig));
+    } else {
+      setCanvas(new Chart(canvasRef.current, chartConfig));
+    }
   }, [books]);
 
   return (
@@ -55,7 +63,7 @@ const OverSlaByStates = (props) => {
         {books.total > 0 ? (
           <canvas height="220" ref={canvasRef} className="blog-users-by-device m-auto" />
         ) : (
-          'Data not avalaible'
+          'Data not available'
         )}
       </CardBody>
       <CardFooter className="border-top">
