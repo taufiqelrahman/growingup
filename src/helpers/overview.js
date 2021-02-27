@@ -136,36 +136,40 @@ export const returnedBooks = (orders, timeFilter) => {
   };
 };
 
-const isOverSla = (createdAt, targetDate) => {
+const overSlaDays = (createdAt, targetDate) => {
   return calculateDays(createdAt, targetDate) - 7;
 };
 
+const accumulateDays = (days, acc) => {
+  const daysDict = { ...acc };
+  if (daysDict[days]) {
+    daysDict[days] += 1;
+  } else {
+    daysDict[days] = 1;
+  }
+  return daysDict;
+};
+
 export const booksOverSla = (orders, timeFilter) => {
-  const slaByDays = {};
+  let slaByDays = {};
   const filteredOrders = filterOrders(orders, timeFilter);
 
   const oveSlaSentBooks = filteredOrders.filter((order) => {
     if (order.fulfillments && order.fulfillments.length && !!order.printings) {
       const [fulfillment] = order.fulfillments;
-      const days = isOverSla(order.printings.created_at, fulfillment.created_at);
-      if (slaByDays[days]) {
-        slaByDays[days] += 1;
-      } else {
-        slaByDays[days] = 1;
-      }
-      return days > 0;
+      const days = overSlaDays(order.printings.created_at, fulfillment.created_at);
+      const isOverSla = days > 0;
+      if (isOverSla) slaByDays = { ...accumulateDays(days, slaByDays) };
+      return isOverSla;
     }
     return false;
   });
   const overSlaOngoingBooks = filteredOrders.filter((order) => {
     if (!(order.fulfillments && order.fulfillments.length) && !!order.printings) {
-      const days = isOverSla(order.printings.created_at);
-      if (slaByDays[days]) {
-        slaByDays[days] += 1;
-      } else {
-        slaByDays[days] = 1;
-      }
-      return days > 0;
+      const days = overSlaDays(order.printings.created_at);
+      const isOverSla = days > 0;
+      if (isOverSla) slaByDays = { ...accumulateDays(days, slaByDays) };
+      return isOverSla;
     }
     return false;
   });
