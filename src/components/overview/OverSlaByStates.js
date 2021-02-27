@@ -10,8 +10,9 @@ const OverSlaByStates = (props) => {
   const canvasRef = useRef();
 
   useEffect(() => {
+    if (canvas) canvas.destroy();
     if (books.total === 0) {
-      if (canvas) setCanvas(canvas.destroy());
+      if (canvas) setCanvas(null);
       return;
     }
     const chartData = {
@@ -47,11 +48,7 @@ const OverSlaByStates = (props) => {
       },
     };
 
-    if (canvas) {
-      setCanvas(canvas.update(chartConfig));
-    } else {
-      setCanvas(new Chart(canvasRef.current, chartConfig));
-    }
+    setCanvas(new Chart(canvasRef.current, chartConfig));
   }, [books, timeFilter]);
 
   return (
