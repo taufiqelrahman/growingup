@@ -5,7 +5,7 @@ import { Row, Col, Card, CardHeader, CardBody, CardFooter } from 'shards-react';
 import Chart from '../../utils/chart';
 
 const OverSlaByStates = (props) => {
-  const { title, books } = props;
+  const { title, books, timeFilter } = props;
   const [canvas, setCanvas] = useState(null);
   const canvasRef = useRef();
 
@@ -52,7 +52,7 @@ const OverSlaByStates = (props) => {
     } else {
       setCanvas(new Chart(canvasRef.current, chartConfig));
     }
-  }, [books]);
+  }, [books, timeFilter]);
 
   return (
     <Card small className="h-100">
@@ -90,6 +90,7 @@ OverSlaByStates.propTypes = {
    */
   chartOptions: PropTypes.object,
   books: PropTypes.object,
+  timeFilter: PropTypes.object,
 };
 
 OverSlaByStates.defaultProps = {

@@ -144,7 +144,7 @@ const Overview = () => {
               <OverSlaByStates books={overSlaBooks} />
             </Col>
             <Col lg="3" md="3" sm="12" className="mb-4">
-              <OverSlaList books={overSlaBooks} />
+              <OverSlaList books={overSlaBooks} timeFilter={timeFilter} />
             </Col>
           </Row>
         </>

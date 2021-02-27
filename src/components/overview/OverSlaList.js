@@ -10,7 +10,7 @@ const TopReferrals = ({ title, books }) => {
         <div className="block-handle" />
       </CardHeader>
 
-      <CardBody className="p-0">
+      <CardBody className="p-0" style={{ height: 362, overflowY: 'auto' }}>
         <ListGroup small flush className="list-group-small">
           {books.slaByDays.length ? (
             books.slaByDays.map((book) => (
