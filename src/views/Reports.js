@@ -32,31 +32,33 @@ const Reports = () => {
     { label: 'Total Books', key: 'total_line_items' },
   ];
   const filteredOrders = () => {
-    return orders.map(
-      ({
-        created_at,
-        gateway,
-        financial_status,
-        total_discounts,
-        total_line_items_price,
-        name,
-        fulfillment_status,
-        total_price,
-        line_items,
-        email,
-      }) => ({
-        created_at,
-        gateway,
-        financial_status,
-        total_discounts,
-        total_line_items_price,
-        order_number: name,
-        fulfillment_status,
-        total_price,
-        total_line_items: line_items.length,
-        email,
-      }),
-    );
+    return orders
+      .filter((order) => !!order.line_items)
+      .map(
+        ({
+          created_at,
+          gateway,
+          financial_status,
+          total_discounts,
+          total_line_items_price,
+          name,
+          fulfillment_status,
+          total_price,
+          line_items,
+          email,
+        }) => ({
+          created_at,
+          gateway,
+          financial_status,
+          total_discounts,
+          total_line_items_price,
+          order_number: name,
+          fulfillment_status,
+          total_price,
+          total_line_items: line_items.length,
+          email,
+        }),
+      );
   };
   const childrenHeaders = [
     { label: 'Created At', key: 'created_at' },
