@@ -9,26 +9,26 @@ const TopReferrals = ({ title, books }) => {
         <h6 className="m-0">{title}</h6>
         <div className="block-handle" />
       </CardHeader>
+      {books.slaByDays.length ? (
+        <CardHeader className="d-flex px-3 border-bottom">
+          <span style={{ fontWeight: 600 }} className="text-fiord-blue">
+            Days passed
+          </span>
+          <span style={{ fontWeight: 600 }} className="ml-auto text-right text-reagent-gray">
+            Count
+          </span>
+        </CardHeader>
+      ) : null}
 
       <CardBody className="p-0" style={{ height: 362, overflowY: 'auto' }}>
         <ListGroup small flush className="list-group-small">
           {books.slaByDays.length ? (
-            <>
-              <ListGroupItem className="d-flex px-3">
-                <span style={{ fontWeight: 600 }} className="text-fiord-blue">
-                  Days passed
-                </span>
-                <span style={{ fontWeight: 600 }} className="ml-auto text-right text-reagent-gray">
-                  Count
-                </span>
+            books.slaByDays.map((book) => (
+              <ListGroupItem key={book.day} className="d-flex px-3">
+                <span className="text-semibold text-fiord-blue">{book.day}</span>
+                <span className="ml-auto text-right text-semibold text-reagent-gray">{book.count}</span>
               </ListGroupItem>
-              {books.slaByDays.map((book) => (
-                <ListGroupItem key={book.day} className="d-flex px-3">
-                  <span className="text-semibold text-fiord-blue">{book.day}</span>
-                  <span className="ml-auto text-right text-semibold text-reagent-gray">{book.count}</span>
-                </ListGroupItem>
-              ))}
-            </>
+            ))
           ) : (
             <ListGroupItem className="d-flex px-3">Data not available</ListGroupItem>
           )}
