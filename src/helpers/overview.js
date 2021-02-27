@@ -75,11 +75,13 @@ export const booksSold = (orders, timeFilter) => {
 
 export const ordersProcessed = (orders, timeFilter) => {
   const filteredOrders = filterOrders(orders, timeFilter);
+  const sentBooks = filteredOrders.filter((order) => order.fulfillments && order.fulfillments.length);
   return {
     label: 'Orders processed',
     value: filteredOrders.length,
     backgroundColor: 'rgba(23,198,113,0.1)',
     attrs: { md: '3', sm: '6' },
+    subtitle: `${sentBooks.length} sent`,
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {

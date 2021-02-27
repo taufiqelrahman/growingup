@@ -42,14 +42,22 @@ const StatsTitleEl = styled.span`
   color: #818ea3;
   text-transform: uppercase;
 `;
+const StatsValueEl = styled.div`
+  height: 51px;
+`;
 const StatsNumberEl = styled.h6`
   font-size: 2.0625rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin-bottom: 8px;
+  margin-top: 16px;
   line-height: 1.5rem;
   color: #3d5170;
   font-weight: 500;
   text-align: center;
+`;
+const StatsSubtitleEl = styled.div`
+  text-align: center;
+  margin-bottom: 8px;
+  color: #818ea3;
 `;
 
 const Overview = () => {
@@ -133,7 +141,10 @@ const Overview = () => {
                 <StatsWrapperEl background={stats.backgroundColor}>
                   <StatsContentEl>
                     <StatsTitleEl>{stats.label}</StatsTitleEl>
-                    <StatsNumberEl>{stats.value}</StatsNumberEl>
+                    <StatsValueEl>
+                      <StatsNumberEl>{stats.value}</StatsNumberEl>
+                      <StatsSubtitleEl>{stats.subtitle}</StatsSubtitleEl>
+                    </StatsValueEl>
                   </StatsContentEl>
                 </StatsWrapperEl>
               </Col>

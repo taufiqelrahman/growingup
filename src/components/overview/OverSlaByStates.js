@@ -20,7 +20,7 @@ const OverSlaByStates = (props) => {
         {
           hoverBorderColor: '#ffffff',
           data: [books.sent, books.ongoing],
-          backgroundColor: ['rgba(0,123,255,0.9)', 'rgba(0,123,255,0.5)', 'rgba(0,123,255,0.3)'],
+          backgroundColor: ['rgba(0,123,255,0.5)', 'rgba(255,65,105,0.1)'],
         },
       ],
       labels: ['Sent', 'On Going'],
@@ -63,12 +63,14 @@ const OverSlaByStates = (props) => {
           'Data not available'
         )}
       </CardBody>
-      <CardFooter className="border-top">
-        <Row>
-          <Col>Total</Col>
-          <Col className="text-right view-report">{books.total}</Col>
-        </Row>
-      </CardFooter>
+      {books.total > 0 && (
+        <CardFooter className="border-top">
+          <Row>
+            <Col>Total books</Col>
+            <Col className="text-right view-report">{books.total}</Col>
+          </Row>
+        </CardFooter>
+      )}
     </Card>
   );
 };

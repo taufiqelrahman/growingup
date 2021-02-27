@@ -3,6 +3,7 @@ import { Nav } from 'shards-react';
 
 import SidebarNavItem from './SidebarNavItem';
 import { Store } from '../../../flux';
+import { adminRoles } from '../../../config/admin-roles';
 
 class SidebarNavItems extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class SidebarNavItems extends React.Component {
         <Nav className="nav--no-borders flex-column">
           {this.state.me &&
             items.map((item, idx) => {
-              if (!item.adminRoles.includes(this.state.me.is_admin)) return null;
+              if (!item.adminRoles.includes(adminRoles[this.state.me.is_admin])) return null;
               return <SidebarNavItem key={idx} item={item} />;
             })}
         </Nav>
