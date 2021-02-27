@@ -20,7 +20,7 @@ const OverSlaByStates = (props) => {
         {
           hoverBorderColor: '#ffffff',
           data: [books.sent, books.ongoing],
-          backgroundColor: ['rgba(0,123,255,0.5)', 'rgba(255,65,105,0.1)'],
+          backgroundColor: ['#ffc107', '#dc3545'],
         },
       ],
       labels: ['Sent', 'On Going'],
