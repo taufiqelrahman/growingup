@@ -25,8 +25,8 @@ const App = () => {
       <div>
         {me &&
           routes.map((route, index) => {
-            const isNotHomeOrError = !['/', '/error'].includes(route.path);
-            if (isNotHomeOrError && !route.adminRoles.includes(adminRoles[me.is_admin])) return null;
+            const isErrorPage = route.path === '/error';
+            if (!isErrorPage && !route.adminRoles.includes(adminRoles[me.is_admin])) return null;
             const useFooter = route.path !== '/printing';
             return (
               <Route
