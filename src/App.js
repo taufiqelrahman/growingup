@@ -26,7 +26,7 @@ const App = () => {
         {me &&
           routes.map((route, index) => {
             const isErrorPage = route.path === '/error';
-            if (!isErrorPage && !route.adminRoles.includes(adminRoles[me.is_admin])) return null;
+            const isAllowed = isErrorPage || route.adminRoles.includes(adminRoles[me.is_admin]);
             const useFooter = route.path !== '/printing';
             return (
               <Route
@@ -35,7 +35,7 @@ const App = () => {
                 exact={route.exact}
                 component={withTracker((props) => {
                   return (
-                    <route.layout {...props} noFooter={!useFooter}>
+                    <route.layout {...props} noFooter={!useFooter} isAllowed={isAllowed}>
                       <route.component {...props} />
                     </route.layout>
                   );
