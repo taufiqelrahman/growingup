@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardBody, ListGroup, ListGroupItem } from 'shards-react';
 
-const TopReferrals = ({ title, books }) => {
+const OverSlaList = ({ title, books }) => {
   return (
     <Card small>
       <CardHeader className="border-bottom">
@@ -55,7 +55,7 @@ const TopReferrals = ({ title, books }) => {
   );
 };
 
-TopReferrals.propTypes = {
+OverSlaList.propTypes = {
   /**
    * The component's title.
    */
@@ -67,7 +67,7 @@ TopReferrals.propTypes = {
   books: PropTypes.object,
 };
 
-TopReferrals.defaultProps = {
+OverSlaList.defaultProps = {
   title: 'Over Sla By Days',
   // referralData: [
   //   {
@@ -105,4 +105,4 @@ TopReferrals.defaultProps = {
   // ],
 };
 
-export default TopReferrals;
+export default OverSlaList;

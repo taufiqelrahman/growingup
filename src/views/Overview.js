@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import PageTitle from '../components/common/PageTitle';
 import OverSlaByStates from '../components/overview/OverSlaByStates';
 import OverSlaList from '../components/overview/OverSlaList';
+import PrintingList from '../components/overview/PrintingList';
 // import SmallStats from '../components/common/SmallStats';
 // import UsersOverview from '../components/blog/UsersOverview';
 // import NewDraft from '../components/blog/NewDraft';
@@ -21,6 +22,7 @@ import {
   timeSpaceEnum,
   returnedBooks,
   booksOverSla,
+  sortPrintingsByStates,
 } from '../helpers/overview';
 
 const StatsWrapperEl = styled.div`
@@ -85,9 +87,15 @@ const Overview = () => {
     const returnedBooksResult = returnedBooks(printings, timeFilter);
     return [booksSoldResult, ordersProcessedResult, uniqueCustomersResult, returnedBooksResult];
   }, [timeFilter, orders, printings]);
+
   const overSlaBooks = useMemo(() => {
     return booksOverSla(orders, timeFilter);
   }, [timeFilter, orders]);
+
+  const printingsByStates = useMemo(() => {
+    return sortPrintingsByStates(printings, timeFilter);
+  }, [timeFilter, printings]);
+
   return (
     <Container fluid className="main-content-container px-4">
       {/* Page Header */}
@@ -151,11 +159,14 @@ const Overview = () => {
             ))}
           </Row>
           <Row>
-            <Col lg="6" md="6" sm="12" className="mb-4">
+            <Col lg="6" md="12" sm="12" className="mb-4">
               <OverSlaByStates books={overSlaBooks} />
             </Col>
-            <Col lg="3" md="3" sm="12" className="mb-4">
+            <Col lg="3" md="6" sm="12" className="mb-4">
               <OverSlaList books={overSlaBooks} timeFilter={timeFilter} />
+            </Col>
+            <Col lg="3" md="6" sm="12" className="mb-4">
+              <PrintingList printings={printingsByStates} timeFilter={timeFilter} />
             </Col>
           </Row>
         </>

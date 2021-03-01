@@ -1,4 +1,5 @@
 import { calculateDays } from './calculateDays';
+import printingStates from '../config/printing-states';
 
 export const timeUnitEnum = {
   DAILY: 'Daily',
@@ -59,7 +60,7 @@ export const booksSold = (orders, timeFilter) => {
     label: 'Books Sold',
     value: count,
     backgroundColor: 'rgba(0, 184, 216, 0.1)',
-    attrs: { md: '3', sm: '6' },
+    attrs: { lg: '3', md: '6', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -80,7 +81,7 @@ export const ordersProcessed = (orders, timeFilter) => {
     label: 'Orders processed',
     value: filteredOrders.length,
     backgroundColor: 'rgba(23,198,113,0.1)',
-    attrs: { md: '3', sm: '6' },
+    attrs: { lg: '3', md: '6', sm: '6' },
     subtitle: `${sentBooks.length} sent`,
     // chartLabels: chartMock.chartLabels,
     // datasets: [
@@ -102,7 +103,7 @@ export const uniqueCustomers = (orders, timeFilter) => {
     label: 'Unique customers',
     value: customers.size,
     backgroundColor: 'rgba(255,180,0,0.1)',
-    attrs: { md: '3', sm: '6' },
+    attrs: { lg: '3', md: '6', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -124,7 +125,7 @@ export const returnedBooks = (orders, timeFilter) => {
     label: 'Returned books',
     value: returnedBooks.length,
     backgroundColor: 'rgba(255,65,105,0.1)',
-    attrs: { md: '3', sm: '6' },
+    attrs: { lg: '3', md: '6', sm: '6' },
     // chartLabels: chartMock.chartLabels,
     // datasets: [
     //   {
@@ -189,4 +190,16 @@ export const booksOverSla = (orders, timeFilter) => {
     total: oveSlaSentBooks.length + overSlaOngoingBooks.length,
     slaByDays: sortedSlaByDays,
   };
+};
+
+export const sortPrintingsByStates = (orders, timeFilter) => {
+  const filteredOrders = filterOrders(orders, timeFilter);
+  const mapByStates = (state) => {
+    const ordersByCurrentState = filteredOrders.filter((order) => order.printings.printing_state === state.key);
+    return {
+      state: state,
+      count: ordersByCurrentState.length,
+    };
+  };
+  return printingStates.map(mapByStates);
 };
