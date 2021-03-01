@@ -1,36 +1,52 @@
 import { calculateDays } from './calculateDays';
 import printingStates from '../config/printing-states';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia / Jakarta');
 
 export const timeUnitEnum = {
-  DAILY: 'Daily',
-  MONTHLY: 'Monthly',
-  YEARLY: 'Yearly',
+  day: {
+    key: 'day',
+    value: 'Daily',
+  },
+  month: {
+    key: 'month',
+    value: 'Monthly',
+  },
+  year: {
+    key: 'year',
+    value: 'Yearly',
+  },
 };
 export const timeSpaceEnum = {
-  Daily: ['Today', 'Yesterday'],
-  Monthly: ['This month', 'Last month'],
-  Yearly: ['This year', 'Last year'],
+  day: ['Today', 'Yesterday'],
+  month: ['This month', 'Last month'],
+  year: ['This year', 'Last year'],
 };
 
-const dateConverter = (date, timeFilter, reductor = 0) => {
-  const [month, day, year] = date.toLocaleDateString().split('/');
+const dateConverter = (date, timeFilter, reducer = 0) => {
+  if (reducer) date = date.subtract(reducer, timeFilter.unit);
   switch (timeFilter.unit) {
-    case timeUnitEnum.DAILY:
-      return parseInt(day, 10) - reductor + month + year;
-    case timeUnitEnum.MONTHLY:
-      return parseInt(month, 10) - reductor + year;
-    case timeUnitEnum.YEARLY:
-      return parseInt(year, 10) - reductor;
+    case timeUnitEnum.day.key:
+      return `${date.date()} ${date.month()} ${date.year()}`;
+    case timeUnitEnum.month.key:
+      return `${date.month()} ${date.year()}`;
+    case timeUnitEnum.year.key:
+      return date.year().toString();
     default:
       return '';
   }
 };
 
 const filterOrders = (orders, timeFilter) => {
-  const reductor = timeSpaceEnum[timeFilter.unit].indexOf(timeFilter.space) === 0 ? 0 : 1;
-  const dateComparer = dateConverter(new Date(), timeFilter, reductor);
+  const reducer = timeSpaceEnum[timeFilter.unit].indexOf(timeFilter.space) === 0 ? 0 : 1;
+  const dateComparer = dateConverter(dayjs(), timeFilter, reducer);
   return orders.filter((order) => {
-    const dateToCompare = dateConverter(new Date(order.created_at), timeFilter);
+    const dateToCompare = dateConverter(dayjs(order.created_at), timeFilter);
     return dateToCompare === dateComparer;
   });
 };

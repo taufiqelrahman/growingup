@@ -64,8 +64,8 @@ const StatsSubtitleEl = styled.div`
 
 const Overview = () => {
   const [timeFilter, setTimeFilter] = useState({
-    unit: timeUnitEnum.MONTHLY,
-    space: timeSpaceEnum.Monthly[0],
+    unit: timeUnitEnum.month.key,
+    space: timeSpaceEnum.month[0],
   });
 
   const [orders, setOrders] = useState(store.getOrders());
@@ -116,9 +116,9 @@ const Overview = () => {
               }
               size="sm"
             >
-              {Object.keys(timeUnitEnum).map((unitKey) => (
-                <option key={unitKey} value={timeUnitEnum[unitKey]}>
-                  {timeUnitEnum[unitKey]}
+              {Object.keys(timeUnitEnum).map((unit) => (
+                <option key={unit} value={timeUnitEnum[unit].key}>
+                  {timeUnitEnum[unit].value}
                 </option>
               ))}
             </FormSelect>
