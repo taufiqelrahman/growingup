@@ -72,7 +72,7 @@ export function getPrintingOrders() {
       });
       dispatcher.dispatch({
         actionType: constants.GET_PRINTING_ORDERS,
-        data: Object.values(result).filter((order) => !!order.printings),
+        data: Object.values(result).filter((order) => !!order.printings && order.fulfillments),
       });
     })
     .catch(() => {
@@ -98,7 +98,7 @@ export function getOrders() {
       dispatcher.dispatch({
         actionType: constants.GET_ORDERS,
         data: {
-          orders: Object.values(result),
+          orders: Object.values(result).filter((order) => order.fulfillments),
           printings: data.data.order_printing,
         },
       });

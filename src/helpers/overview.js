@@ -46,8 +46,9 @@ const filterOrders = (orders, timeFilter) => {
   const reducer = timeSpaceEnum[timeFilter.unit].indexOf(timeFilter.space) === 0 ? 0 : 1;
   const dateComparer = dateConverter(dayjs(), timeFilter, reducer);
   return orders.filter((order) => {
+    const hasPrintingsObject = !!order.printings;
     const dateToCompare = dateConverter(dayjs(order.created_at), timeFilter);
-    return dateToCompare === dateComparer;
+    return dateToCompare === dateComparer && hasPrintingsObject;
   });
 };
 // const getRandomInt = (max) => {
