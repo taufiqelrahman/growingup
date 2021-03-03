@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Button, FormInput, FormGroup, FormSelect, Modal, ModalBody, ModalHeader } from 'shards-react';
 import Skeleton from 'react-loading-skeleton';
@@ -8,6 +9,22 @@ import printingStates from '../../config/printing-states';
 import printingTeam from '../../config/printing-team';
 import { updateOrder } from '../../flux/actions';
 
+const DotEl = styled.span`
+  margin-right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #de3636;
+`;
+
+const NotesButtonEl = styled(Button)`
+  display: inline-flex;
+  align-items: center;
+  color: black;
+  border-color: #1adba2;
+  background-color: #1adba2;
+`;
+
 const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
   const [sourceModal, setSourceModal] = useState({
     isOpened: false,
@@ -15,6 +32,10 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
     orderId: null,
   });
   const [logModal, setLogModal] = useState({
+    isOpened: false,
+    content: '',
+  });
+  const [notesModal, setNotesModal] = useState({
     isOpened: false,
     content: '',
   });
@@ -54,6 +75,7 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
   };
   const setAssignee = (id, name) => updateOrder(id, { assignee: name });
   const onViewLog = (order) => setLogModal({ isOpened: true, content: order.printings.note });
+  const onViewNotes = (order) => setNotesModal({ isOpened: true, content: order.note });
   return (
     <>
       <div style={{ display: 'flex', overflowX: 'auto', paddingTop: 18, borderTop: '2px solid #d9dde1' }}>
@@ -171,6 +193,17 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                         >
                                           Log
                                         </Button>
+                                        {order.note && (
+                                          <NotesButtonEl
+                                            size="sm"
+                                            theme="success"
+                                            className="mt-3 mr-1"
+                                            onClick={() => onViewNotes(order)}
+                                          >
+                                            <DotEl />
+                                            Notes
+                                          </NotesButtonEl>
+                                        )}
                                       </div>
                                     )}
                                   </Draggable>
@@ -214,6 +247,12 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
         <ModalHeader>Log</ModalHeader>
         <ModalBody>
           <div dangerouslySetInnerHTML={{ __html: logModal.content }} />
+        </ModalBody>
+      </Modal>
+      <Modal open={notesModal.isOpened} toggle={() => setNotesModal({ ...notesModal, isOpened: !notesModal.isOpened })}>
+        <ModalHeader>Notes</ModalHeader>
+        <ModalBody>
+          <div dangerouslySetInnerHTML={{ __html: notesModal.content }} />
         </ModalBody>
       </Modal>
     </>
