@@ -83,6 +83,9 @@ const Printing = () => {
     setUiState({ ...uiState, loading: false, updatin: false });
     // setMe(store.getMe());
   }
+  useEffect(() => {
+    setFilterState({ filteredStatus: '', filteredOrderNumber: '', sortByColumn: '', sortByDescending: true });
+  }, [display]);
   const viewBooks = (order) => {
     const books = order.line_items.map((item) => {
       let newItem = { id: item.id };
@@ -210,7 +213,7 @@ const Printing = () => {
                 >
                   <option value="">Select status</option>
                   {printingStates.map((state) => (
-                    <option key={state.key} value={state.value}>
+                    <option key={state.key} value={state.key}>
                       {state.value}
                     </option>
                   ))}
