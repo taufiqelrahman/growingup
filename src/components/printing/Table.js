@@ -35,7 +35,7 @@ const Table = ({
   }, [orders, pageActive]);
   const onSave = (order) => {
     updateOrder(order.id, formData);
-    cancelEdit();
+    setUiState({ ...uiState, isEdit: false, loading: true });
   };
   const onEdit = (order) => {
     setUiState({ ...uiState, isEdit: order.id });
@@ -163,7 +163,14 @@ const Table = ({
                         </>
                       ) : (
                         <>
-                          <Button outline size="sm" theme="warning" className="mb-2 mr-1" onClick={() => onEdit(order)}>
+                          <Button
+                            outline
+                            size="sm"
+                            theme="warning"
+                            className="mb-2 mr-1"
+                            onClick={() => onEdit(order)}
+                            disabled={uiState.loading}
+                          >
                             Ubah
                           </Button>
                           <Button
@@ -172,6 +179,7 @@ const Table = ({
                             theme="dark"
                             className="mb-2 mr-1"
                             onClick={() => viewFulfillment(order)}
+                            disabled={uiState.loading}
                           >
                             Resi
                           </Button>

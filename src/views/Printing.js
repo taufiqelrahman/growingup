@@ -80,7 +80,7 @@ const Printing = () => {
   }, [filterState]);
   function onChange() {
     setOrders(store.getPrintingOrders());
-    setUiState({ ...uiState, loading: false, updatin: false });
+    setUiState({ ...uiState, loading: false, updating: false });
     // setMe(store.getMe());
   }
   useEffect(() => {
@@ -104,11 +104,13 @@ const Printing = () => {
     }
   };
   const onFulfillOrder = () => {
+    setUiState({ ...uiState, loading: true });
     const { tracking_number, trackin_url, tracking_company } = fulfillmentData;
     fulfillOrder(uiState.orderId, { tracking_number, trackin_url, tracking_company });
     closeReceiptModal();
   };
   const onUpdateFulfillment = () => {
+    setUiState({ ...uiState, loading: true });
     const { id, tracking_number, tracking_company } = fulfillmentData;
     updateFulfillment(uiState.orderId, id, { id, tracking_number, tracking_company });
     closeReceiptModal();
@@ -118,6 +120,8 @@ const Printing = () => {
     if (fulfillment) {
       const { id, tracking_number, tracking_company } = fulfillment;
       setFulfillmentData({ id, tracking_number, tracking_company });
+    } else {
+      setFulfillmentData({ id: '', tracking_number: '', tracking_company: '' });
     }
     setUiState({ ...uiState, receiptModal: true, orderId: order.shopify_order_id });
   };
