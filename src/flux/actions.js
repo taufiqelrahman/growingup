@@ -111,23 +111,16 @@ export function getOrdersReport() {
     orders.getWithDates(currentMonth),
     orders.getWithDates(currentMonth - 1),
     orders.getWithDates(currentMonth - 2),
-    orders.getWithDates(currentMonth - 3),
   ])
     .then(([currentMonth, previousMonth, earlierMonth]) => {
       let result = {};
       result = processOrders(result, currentMonth);
       result = processOrders(result, previousMonth);
       result = processOrders(result, earlierMonth);
-      const printings = [
-        ...currentMonth.data.data.order_printing,
-        ...previousMonth.data.data.order_printing,
-        ...earlierMonth.data.data.order_printing,
-      ];
       dispatcher.dispatch({
-        actionType: constants.GET_ORDERS,
+        actionType: constants.GET_ORDERS_REPORT,
         data: {
           orders: Object.values(result).filter((order) => order.fulfillments),
-          printings,
         },
       });
     })

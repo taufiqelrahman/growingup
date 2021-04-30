@@ -7,16 +7,16 @@ import store from '../flux/store';
 import PageTitle from '../components/common/PageTitle';
 
 const Reports = () => {
-  const [orders, setOrders] = useState(store.getOrders());
+  const [orders, setOrders] = useState(store.getOrdersReport());
   const [children, setChildren] = useState(store.getChildren());
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0) getOrdersReport();
+    if (store.getOrdersReport().length === 0) getOrdersReport();
     if (store.getChildren().length === 0) getChildren();
     return () => store.removeChangeListener(onChange);
   }, []);
   function onChange() {
-    setOrders(store.getOrders());
+    setOrders(store.getOrdersReport());
     setChildren(store.getChildren());
   }
   const ordersHeaders = [
