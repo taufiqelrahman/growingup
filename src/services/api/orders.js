@@ -7,6 +7,13 @@ export default class Orders {
     return this.adapter.secure.get('/orderslist');
   }
 
+  getWithDates(month) {
+    return this.adapter.secure.post('/orderslist/dates', {
+      month,
+      year: new Date().getFullYear(),
+    });
+  }
+
   update(id, data) {
     return this.adapter.secure.patch(`/orderslist/${id}`, data);
   }

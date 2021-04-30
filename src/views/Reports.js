@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'shards-react';
 
 import { CSVLink } from 'react-csv';
-import { getOrders, getChildren } from '../flux/actions';
+import { getOrdersReport, getChildren } from '../flux/actions';
 import store from '../flux/store';
 import PageTitle from '../components/common/PageTitle';
 
@@ -11,7 +11,7 @@ const Reports = () => {
   const [children, setChildren] = useState(store.getChildren());
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0) getOrders();
+    if (store.getOrders().length === 0) getOrdersReport();
     if (store.getChildren().length === 0) getChildren();
     return () => store.removeChangeListener(onChange);
   }, []);

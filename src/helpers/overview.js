@@ -17,15 +17,15 @@ export const timeUnitEnum = {
     key: 'month',
     value: 'Monthly',
   },
-  year: {
-    key: 'year',
-    value: 'Yearly',
-  },
+  // year: {
+  //   key: 'year',
+  //   value: 'Yearly',
+  // },
 };
 export const timeSpaceEnum = {
   day: ['Today', 'Yesterday'],
   month: ['This month', 'Last month'],
-  year: ['This year', 'Last year'],
+  // year: ['This year', 'Last year'],
 };
 
 const dateConverter = (date, timeFilter, reducer = 0) => {

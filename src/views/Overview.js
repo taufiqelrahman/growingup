@@ -1,7 +1,8 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 // import PropTypes from 'prop-types';
 import { Container, Row, Col, FormGroup, FormSelect } from 'shards-react';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 
 import PageTitle from '../components/common/PageTitle';
 import OverSlaByStates from '../components/overview/OverSlaByStates';
@@ -12,7 +13,7 @@ import PrintingList from '../components/overview/PrintingList';
 // import NewDraft from '../components/blog/NewDraft';
 // import Discussions from '../components/blog/Discussions';
 
-import { getOrders } from '../flux/actions';
+import { getOrders, getOrdersWithDates } from '../flux/actions';
 import store from '../flux/store';
 import {
   booksSold,
@@ -72,7 +73,7 @@ const Overview = () => {
   const [printings, setPrintings] = useState(store.getPrintings());
   useEffect(() => {
     store.addChangeListener(onChange);
-    if (store.getOrders().length === 0 || store.getPrintings().length === 0) getOrders();
+    if (store.getOrders().length === 0 || store.getPrintings().length === 0) fetchOrders(timeFilter);
     return () => store.removeChangeListener(onChange);
   }, []);
   function onChange() {
@@ -95,6 +96,22 @@ const Overview = () => {
   const printingsByStates = useMemo(() => {
     return sortPrintingsByStates(printings, timeFilter);
   }, [timeFilter, printings]);
+
+  const fetchOrders = useCallback(
+    debounce((_timeFilter) => {
+      if (_timeFilter.unit === timeUnitEnum.month.key) {
+        const reducer = _timeFilter.space === timeSpaceEnum.month[0] ? 0 : 1;
+        getOrdersWithDates(new Date().getMonth() + 1 - reducer);
+      } else {
+        getOrders();
+      }
+    }, 500),
+    [],
+  );
+
+  useEffect(() => {
+    fetchOrders(timeFilter);
+  }, [timeFilter]);
 
   return (
     <Container fluid className="main-content-container px-4">
