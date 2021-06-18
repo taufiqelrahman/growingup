@@ -316,6 +316,12 @@ const Printing = () => {
                     Jenis Kelamin
                   </th>
                   <th scope="col" className="border-0">
+                    Ayah
+                  </th>
+                  <th scope="col" className="border-0">
+                    Ibu
+                  </th>
+                  <th scope="col" className="border-0">
                     Dedication
                   </th>
                 </tr>
@@ -330,6 +336,9 @@ const Printing = () => {
                     <td style={{ textTransform: 'capitalize' }}>{data.Occupations}</td>
                     <td style={{ textTransform: 'capitalize' }}>{data.Cover}</td>
                     <td style={{ textTransform: 'capitalize' }}>{data.Name}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Gender}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Daddy}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{data.Mommy}</td>
                     <td style={{ textTransform: 'capitalize' }}>{data.Gender}</td>
                     <td>{data.Dedication}</td>
                   </tr>
