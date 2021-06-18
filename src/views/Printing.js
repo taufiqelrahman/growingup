@@ -339,7 +339,6 @@ const Printing = () => {
                     <td style={{ textTransform: 'capitalize' }}>{data.Gender}</td>
                     <td style={{ textTransform: 'capitalize' }}>{data.Daddy}</td>
                     <td style={{ textTransform: 'capitalize' }}>{data.Mommy}</td>
-                    <td style={{ textTransform: 'capitalize' }}>{data.Gender}</td>
                     <td>{data.Dedication}</td>
                   </tr>
                 ))}
