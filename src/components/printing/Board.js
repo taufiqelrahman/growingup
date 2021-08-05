@@ -154,6 +154,15 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                             ))}
                                           </FormSelect>
                                         </div>
+                                        {order.note_attributes.length && (
+                                          <div style={{ marginBottom: 6 }}>
+                                            <span style={{ fontWeight: 500 }}>Booking Code: &nbsp;</span>
+                                            {
+                                              (order.note_attributes.find((att) => att.name === 'bookingCode') || {})
+                                                .value
+                                            }
+                                          </div>
+                                        )}
                                         <div style={{ fontWeight: 500 }}>Alamat:</div>
                                         <div>{renderAddress(order)}</div>
                                         <Button

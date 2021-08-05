@@ -25,8 +25,14 @@ export const previewNames = (order) => {
 };
 
 export const renderAddress = (order) => {
+  const { tags, default_address } = order.customer;
   return order.shipping_address ? (
     <div id={`shipping-address-${order.id}`}>
+      <div style={{ opacity: 0, height: 0 }}>
+        <div>Dari</div>
+        <div>{tags.includes('reseller') ? default_address.company : 'Wigubooks'}</div>
+        <div>Kepada</div>
+      </div>
       <div style={{ textTransform: 'capitalize' }}>
         {order.shipping_address.name} ({previewNames(order)})
       </div>
