@@ -92,6 +92,7 @@ const Printing = () => {
       item.properties.forEach((prop) => {
         newItem[prop.name] = prop.value;
       });
+      newItem['quantity'] = item.quantity;
       return { ...newItem };
     });
     setUiState({ ...uiState, modal: true, modalData: books });
