@@ -154,7 +154,7 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                             ))}
                                           </FormSelect>
                                         </div>
-                                        {order.note_attributes.length && (
+                                        {!!order.note_attributes.length && (
                                           <div style={{ marginBottom: 6 }}>
                                             <span style={{ fontWeight: 500 }}>Booking Code: &nbsp;</span>
                                             {
