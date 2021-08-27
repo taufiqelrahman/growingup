@@ -8,6 +8,10 @@ const printingStates = [
     value: 'In progress',
   },
   {
+    key: 'EDITING',
+    value: 'Editing',
+  },
+  {
     key: 'QC_PDF',
     value: 'QC PDF',
   },

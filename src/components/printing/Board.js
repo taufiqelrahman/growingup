@@ -8,6 +8,7 @@ import { calculateDays, previewNames, renderAddress, renderSourcePath } from '..
 import printingStates from '../../config/printing-states';
 import printingTeam from '../../config/printing-team';
 import { updateOrder } from '../../flux/actions';
+import { getBooks } from '../../views/Printing';
 
 const DotEl = styled.span`
   margin-right: 6px;
@@ -163,6 +164,14 @@ const Board = ({ onDragEnd, uiState, orders, viewFulfillment, viewBooks }) => {
                                             }
                                           </div>
                                         )}
+                                        <div style={{ fontWeight: 500 }}>Tipe anak:</div>
+                                        <div>
+                                          {getBooks(order).map((book) => (
+                                            <div key={book.id}>
+                                              {`${book.Gender}-${book.Age}-${book.Hair}-${book.Skin}`}
+                                            </div>
+                                          ))}
+                                        </div>
                                         <div style={{ fontWeight: 500 }}>Alamat:</div>
                                         <div>{renderAddress(order)}</div>
                                         <Button

@@ -21,6 +21,17 @@ import { displayEnum, sortEnum, pageSize } from '../helpers/printings';
 import '../assets/pagination.scss';
 import '../assets/board.scss';
 
+export const getBooks = (order) => {
+  return order.line_items.map((item) => {
+    let newItem = { id: item.id };
+    item.properties.forEach((prop) => {
+      newItem[prop.name] = prop.value;
+    });
+    newItem['quantity'] = item.quantity;
+    return { ...newItem };
+  });
+};
+
 const Printing = () => {
   const [display, setDisplay] = useState(displayEnum.BOARD);
   // const [me, setMe] = useState(store.getMe());
@@ -87,15 +98,7 @@ const Printing = () => {
     setFilterState({ filteredStatus: '', filteredOrderNumber: '', sortByColumn: '', sortByDescending: true });
   }, [display]);
   const viewBooks = (order) => {
-    const books = order.line_items.map((item) => {
-      let newItem = { id: item.id };
-      item.properties.forEach((prop) => {
-        newItem[prop.name] = prop.value;
-      });
-      newItem['quantity'] = item.quantity;
-      return { ...newItem };
-    });
-    setUiState({ ...uiState, modal: true, modalData: books });
+    setUiState({ ...uiState, modal: true, modalData: getBooks(order) });
   };
   const toggleSort = (type) => {
     if (filterState.sortByColumn === type) {
