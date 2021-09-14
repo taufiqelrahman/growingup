@@ -1,1 +1,1 @@
-export default ['Dhana', 'Iwan', 'Riyan', 'Suri'];
+export default ['Dhana', 'Iwan', 'Arab', 'Suri'];
