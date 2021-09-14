@@ -1,8 +1,17 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import styled from 'styled-components';
 import { Container, Row, Col, Card, CardHeader, CardBody, Button, FormInput, FormGroup } from 'shards-react';
 import { getUsers, updateUser } from '../flux/actions';
 import store from '../flux/store';
 import PageTitle from '../components/common/PageTitle';
+
+const TdEl = styled.td`
+  hyphens: auto;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
 
 const Users = () => {
   const [users, setUsers] = useState(store.getUsers());
@@ -66,7 +75,7 @@ const Users = () => {
                 <tbody>
                   {users.map((user) => (
                     <tr key={user.id}>
-                      <td>{user.name}</td>
+                      <TdEl>{user.name}</TdEl>
                       <td>{user.email}</td>
                       <td>
                         {isEdit === user.id ? (

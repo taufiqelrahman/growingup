@@ -5,9 +5,12 @@
 import { DefaultLayout } from './layouts';
 
 // Route Views
-import BlogOverview from './views/BlogOverview';
+// import BlogOverview from './views/BlogOverview';
+import Overview from './views/Overview';
 import Users from './views/Users';
 import Printing from './views/Printing';
+import PsdScripts from './views/PsdScripts';
+import Reports from './views/Reports';
 // import UserProfileLite from "./views/UserProfileLite";
 // import AddNewPost from "./views/AddNewPost";
 import Errors from './views/Errors';
@@ -20,22 +23,36 @@ export default [
     path: '/',
     exact: true,
     layout: DefaultLayout,
-    component: BlogOverview,
-    adminRoles: [],
+    component: Overview,
+    adminRoles: ['admin'],
   },
   {
     path: '/users',
     exact: true,
     layout: DefaultLayout,
     component: Users,
-    adminRoles: [1],
+    adminRoles: ['admin'],
   },
   {
     path: '/printing',
     exact: true,
     layout: DefaultLayout,
     component: Printing,
-    adminRoles: [1, 2],
+    adminRoles: ['admin', 'printing'],
+  },
+  {
+    path: '/psd-scripts',
+    exact: true,
+    layout: DefaultLayout,
+    component: PsdScripts,
+    adminRoles: ['admin', 'printing'],
+  },
+  {
+    path: '/reports',
+    exact: true,
+    layout: DefaultLayout,
+    component: Reports,
+    adminRoles: ['admin'],
   },
   // {
   //   path: "/blog-overview",
