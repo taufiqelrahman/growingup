@@ -51,14 +51,6 @@ A free React admin dashboard template pack featuring a modern design system <br 
 
 ### Project Structure
 
-- This project is bootstrapped using [Create React App](https://github.com/facebook/create-react-app).
-- **Flux** is used for state management and all Flux specific files are located inside `src/flux`. Transitioning to a more robust solution such as Redux is also fairly simple.
-- All primary templates are located inside `src/views`.
-- There is only one single layout defined (Default) inside `src/layouts`, however, the current structure provides an easy way of extending the UI kit. 
-- The `src/components` directory hosts all template-specific subcomponents in their own subdirectory.
-- The layout styles inherited from Shards Dashboard are pulled in from the `src/shards-dashboard` submodule inside `src/App.js`.
-- Other extra styles specific to the libraries used are located inside `src/assets`.
-- The `src/utils` directory contains generic Chart.js utilities.
 
 <br />
 
@@ -93,15 +85,99 @@ If you're looking for something more, check out [Shards Dashboard Pro React](htt
 
 ### Built using
 
-- [Shards React](https://github.com/designrevision/shards-react)
-- [Chart.js](https://www.chartjs.org/)
-- [Flux](https://facebook.github.io/flux/)
-- [No UI Slider](https://refreshless.com/nouislider/)
-- [React Datepicker](https://www.npmjs.com/package/react-datepicker)
-- [Quill](https://quilljs.com/)
 
 <br />
 
 ### Changelog
 
 Please check out the [CHANGELOG](CHANGELOG.md).
+
+## GrowingUp
+
+A modern, feature-rich blogging and dashboard platform built with React. This project provides a customizable admin dashboard, blog management tools, and a variety of reusable UI components.
+
+## Features
+
+- **Blog Management**: Create, edit, and manage blog posts with a rich text editor.
+- **Dashboard Analytics**: Visualize user activity, device usage, referrals, and more.
+- **User Profiles**: View and manage user profiles with detailed analytics.
+- **Reusable Components**: Includes forms, buttons, charts, tables, and more.
+- **Responsive Design**: Optimized for desktop and mobile devices.
+- **Customizable Layouts**: Easily modify navigation, sidebars, and page layouts.
+
+## Project Structure
+
+```
+assets/               # Static images and assets
+public/               # Public files (favicon, index.html, etc.)
+src/                  # Main source code
+  ├── App.js          # Main app component
+  ├── components/     # Reusable UI components
+  ├── flux/           # Flux architecture (actions, store, dispatcher)
+  ├── layouts/        # Layout components
+  ├── services/       # API and service logic
+  ├── utils/          # Utility functions
+  ├── views/          # Page views (Blog, Dashboard, etc.)
+  └── ...
+shards-dashboard/     # Shards Dashboard static HTML and assets
+Dockerfile            # Docker configuration
+package.json          # Project metadata and dependencies
+README.md             # Project documentation
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+  ```sh
+  git clone https://github.com/taufiqelrahman/growingup.git
+  cd growingup
+  ```
+2. Install dependencies:
+  ```sh
+  npm install
+  # or
+  yarn install
+  ```
+
+### Running the App
+
+Start the development server:
+```sh
+npm start
+# or
+yarn start
+```
+
+The app will be available at `http://localhost:3000`.
+
+### Docker
+To run with Docker:
+```sh
+docker build -t growingup .
+docker-compose up
+```
+
+## Folder Details
+- **src/components/**: UI components grouped by feature (blog, common, forms, etc.)
+- **src/views/**: Main pages (BlogOverview, AddNewPost, Users, etc.)
+- **src/flux/**: State management using Flux pattern
+- **src/services/**: API service logic
+- **shards-dashboard/**: Static HTML dashboard templates and assets
+
+## Customization
+- Modify `src/config/sidebar-nav-items.js` to change sidebar navigation.
+- Update `src/assets/` for custom images and styles.
+- Extend components or views as needed for your use case.
+
+## License
+See `shards-dashboard/LICENSE` for dashboard template license. Project code is open for personal and educational use.
+
+## Credits
+- [Shards Dashboard](https://designrevision.com/docs/shards-dashboard/) for UI templates
+- Built by Taufiq El Rahman
