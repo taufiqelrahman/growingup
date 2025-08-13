@@ -4,6 +4,7 @@ import { getMe } from './flux/actions';
 import store from './flux/store';
 
 import routes from './routes';
+import { adminRoles } from './config/admin-roles';
 import withTracker from './withTracker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,8 +25,9 @@ const App = () => {
       <div>
         {me &&
           routes.map((route, index) => {
-            const isNotHomeOrError = !['/', '/error'].includes(route.path);
-            if (isNotHomeOrError && !route.adminRoles.includes(me.is_admin)) return null;
+            const isErrorPage = route.path === '/error';
+            const isAllowed = isErrorPage || route.adminRoles.includes(adminRoles[me.is_admin]);
+            const useFooter = route.path !== '/printing';
             return (
               <Route
                 key={index}
@@ -33,7 +35,7 @@ const App = () => {
                 exact={route.exact}
                 component={withTracker((props) => {
                   return (
-                    <route.layout {...props}>
+                    <route.layout {...props} noFooter={!useFooter} isAllowed={isAllowed}>
                       <route.component {...props} />
                     </route.layout>
                   );

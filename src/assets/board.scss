@@ -1,0 +1,79 @@
+.board {
+  height: calc(100vh - 93px - 60px);
+
+  &__droppable {
+    margin-right: 16px;
+
+    &:last-child {
+      margin-right: 0px;
+    }
+
+    &__container {
+      width: 272px;
+    }
+
+    &__head {
+      font-weight: 700;
+      font-size: 14px;
+      padding: 8px 8px 12px 8px;
+      background: #e06438;
+      color: white;
+    }
+
+    &__body {
+      min-height: 500px;
+      padding: 8px;
+      max-height: calc(100vh - 155px - 60px);
+      overflow-y: auto;
+    }
+  }
+
+  &__draggable {
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: white;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-transform: capitalize;
+    }
+
+    &__remaining {
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      margin-right: 6px;
+
+      &--safe {
+        background-color: #b7edb7;
+        color: #01271c;
+      }
+
+      &--warning {
+        background-color: #ffdbb2;
+        color: #4d2309;
+      }
+
+      &--alert {
+        background: #e31e52;
+        color: white;
+      }
+    }
+  }
+}
+
+.modal-lg {
+  max-width: 95vw !important;
+}
+
+.modal-body {
+  overflow-y: auto !important;
+  max-height: 85vh !important;
+}

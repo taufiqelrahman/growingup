@@ -1,10 +1,17 @@
-export default class Products {
+export default class Orders {
   constructor(adapter) {
     this.adapter = adapter;
   }
 
   get() {
     return this.adapter.secure.get('/orderslist');
+  }
+
+  getWithDates(month) {
+    return this.adapter.secure.post('/orderslist/dates', {
+      month,
+      year: new Date().getFullYear(),
+    });
   }
 
   update(id, data) {
